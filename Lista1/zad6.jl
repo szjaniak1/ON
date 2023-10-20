@@ -1,3 +1,9 @@
+#=
+Szymon Janiak 268514
+Obliczenia Naukowe
+Lista 1, zadanie 6
+=#
+
 function f(x)
 	sqrt(x^2 + 1) - 1
 end

@@ -1,3 +1,9 @@
+#=
+Szymon Janiak 268514
+Obliczenia Naukowe
+Lista 1, zadanie 5
+=#
+
 function forward64(x, y)::Float64
 	S::Float64 = 0.0
 	for i in 1:5
