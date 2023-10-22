@@ -37,4 +37,6 @@ function macheta64()::Float64
 	mach64
 end
 
+println(string(nextfloat(Float16(0.0))) * " -- " * string(macheta16()))
+println(string(nextfloat(Float32(0.0))) * " -- " * string(macheta32()))
 println(string(nextfloat(Float64(0.0))) * " -- " * string(macheta64()))

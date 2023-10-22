@@ -37,4 +37,6 @@ function macheps64()::Float64
 	mach64
 end
 
+println(string(eps(Float16)) * " -- " * string(macheps16()))
 println(string(eps(Float32)) * " -- " * string(macheps32()))
+println(string(eps(Float64)) * " -- " * string(macheps64()))
