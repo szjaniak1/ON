@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage[T1]{fontenc}
-\usepackage[a4paper, total={6in, 10in}]{geometry}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \title{%
@@ -30,7 +30,6 @@
         \State \textbf{return} $macheps$
     \end{algorithmic}
     \end{algorithm}
-
 \subsubsection{Wyniki}
 	\begin{center}
         \begin{tabular}{|c||c|c|c|}
@@ -45,36 +44,95 @@
         \hline
         \end{tabular}
     \end{center}
+\subsubsection{Wnioski}
+    Wraz z wzrostem precyzji zmniejsza sie $macheps$.
 
 \subsection{Eta}
 	$eta$ to najmniejsza liczba taka, że $eta > 0.0$
-\subsubsection{Opis Problemu}
+\subsubsection{Opis problemu}
     Wyznaczenie iteracyjnie liczb maszynowych eta dla wszystkich dostępnych typów zmiennopozycyjnych Float16, Float32, Float64, zgodnych ze standardem IEEE 754.
 \subsubsection{Rozwiązanie}
     \begin{algorithm}
     \caption{$eta$ iteracyjnie}\label{alg:cap}
     \begin{algorithmic}
-        \State $x \gets 1.0$
-        \State $macheps \gets 1.0$
+        \State $eta \gets 1.0$
         \For{ $i$ to $1100$ }
-            \If{ $\frac{macheps}{2} = 0.0$ }
+            \If{ $\frac{eta}{2} = 0.0$ }
             	\State break
             \EndIf
-            \State $macheps \gets \frac{macheps}{2}$
+            \State $eta \gets \frac{eta}{2}$
         \EndFor
-        \State \textbf{return} $macheps$
+        \State \textbf{return} $eta$
     \end{algorithmic}
     \end{algorithm}
-
 \subsubsection{Wyniki}
     \begin{center}
         \begin{tabular}{|c||c|c|c|}
         \hline
-            Źródło & Float16 & Float32 & Float64 \\
+            Źródło & Float16 & Float32 & Float64\\
             \hline\hline
             Mój algorytm & 6.0e-8 & 1.0e-45 & 5.0e-324\\
-             \hline
-             nextfloat(0.0) & 6.0e-8 & 1.0e-45 & 5.0e-324\\
+            \hline
+            nextfloat(0.0) & 6.0e-8 & 1.0e-45 & 5.0e-324\\
+        \hline
+        \end{tabular}
+    \end{center}
+\subsubsection{Wnioski}
+    $MIN_{sub} = 2^{1-t}*2^{c_{min}}$\\
+    gdzie $t$ to liczba cyfr mantysy, a $c_{min}=-2^{d-1}+2$ gdzie, $d$ oznacza liczbę bitów przeznaczonych na zapis cechy.
+        \begin{center}
+        \begin{tabular}{|c|c|c|c|}
+        \hline
+             & Float16 & Float32 & Float64 \\
+            \hline
+            $MIN_{sub}$ & 6.0e-8 & 1.0e-45 & 5.0e-324\\
+        \hline
+        \end{tabular}
+    \end{center}
+    Z tego wynika, że $eta = MIN_{sub}$
+
+\subsection{$MIN_{nor}$}
+    $MIN_{nor} = 2^{c_{min}}$\\
+    gdzie $c_{min}$ jest tym samym co przy $MIN_{sub}$ 
+        \begin{center}
+        \begin{tabular}{|c|c|c|c|}
+        \hline
+             & Float16 & Float32 & Float64 \\
+            \hline
+            $MIN_{nor}$ & 6.104e-5 & 1.1754944e-38 & 2.2250738585072014e-308\\
+            \hline
+            $floatmin()$ & 6.104e-5 & 1.1754944e-38 & 2.2250738585072014e-308\\
+        \hline
+        \end{tabular}
+    \end{center}
+\subsubsection{Wnioski}
+     $floatmin()$ dla danej arytmetyki jest równy z jej $MIN_{nor}$
+
+\subsection{MAX}
+\subsubsection{Opis Problemu}
+    Wyznaczenie iteracyjnie liczbę MAX dla wszystkich typów zmiennoprzecinkowych, zgodnych ze standardem IEEE 754.
+\subsubsection{Rozwiązanie}
+    \begin{algorithm}
+    \caption{$MAX$ iteracyjnie}\label{alg:cap}
+    \begin{algorithmic}
+        \State $max \gets prevfloat(1.0$
+        \While{ $max * 2 \neq \infty $} 
+            \State $max \gets MAX * 2$
+        \EndWhile
+        \State \textbf{return} $MAX$
+    \end{algorithmic}
+    \end{algorithm}
+\subsubsection{Wyniki}
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|}
+        \hline
+            Źródło & Float16 & Float32 & Float64\\
+            \hline\hline
+            Mój algorytm & 6.55e4 & 3.4028235e38 & 1.7976931348623157e308\\
+            \hline
+            floatmax() & 6.55e4 & 3.4028235e38 & 1.7976931348623157e308\\
+            \hline
+            float.h & - & 3.40282e+38 & 1.79769e+308\\
         \hline
         \end{tabular}
     \end{center}
@@ -82,7 +140,7 @@
 \section{Zadanie 2}
 \subsection{Twierdzenie Khan'a}
 	Epislon maszynowy $macheps$ można otrzymać obliczając wyrażenie $3.0*(\frac{4.0}{3.0} - 1.0) - 1.0$
-\subsection{Opis Problemu}
+\subsection{Opis problemu}
     Sprawdzenie czy stwierdzenie Khan'a jest słuszne dla wszystkich typów zmiennopozycyjnych Float16, Float32, Float64.
 \subsection{Wyniki}
     \begin{center}
@@ -100,11 +158,11 @@
     Wyniki z wyrażenia od Khan'a różnią się znakiem dla Float16 i Float64.
 
 \section{Zadanie 3}
-\subsection{Opis Problemu}
+\subsection{Opis problemu}
 	Sprawdzenie rozmieszczenia liczb zmiennoprzecinkowych Float64 w standardzie IEEE 754 w przedziałach [1, 2], [$\frac{1}{2}$, 1] oraz [2, 4].
 \subsection{Rozwiązanie}
-	$\delta$ - krok o który będziemy powiększać początkowe liczby
-    Obserwując otrzymywane wyniki, będziemy mogli dostować wielkośc kroku, aby uzyskać zwiększenie o jeden bit na danym przedziale
+	$\delta$ - krok o który będziemy powiększać początkowe liczby.\\
+    Obserwując otrzymywane wyniki, będziemy mogli dostować wielkośc kroku, aby uzyskać zwiększenie o jeden bit na danym przedziale.
 \subsection{Wyniki}
 	$\delta=2^{-52}$ dla przedziału [1, 2]: 
 	Różnica po jednym kroku\\
@@ -123,5 +181,120 @@
 \subsection{Wnioski}
 	W przedziale [1, 2] liczby występują co $\delta=2^{-52}$.\\
 	W przedziale [$\frac{1}{2}$, 1] 2 razy częsciej, a w przedziale [2, 4] 2 razy rzadziej.
+
+\section{Zadanie 4}
+\subsection{Opis problemu}
+    Znalezienie liczby w arytmetyce Float64 zgodnej ze standardem IEEE 754 liczbe zmiennopozycyjna $x$ w przedziale $1<x<2$ taką, że $x*(1/x) \neq 1$.
+\subsection{Rozwiązanie}
+    \begin{algorithm}
+    \caption{find}\label{alg:cap}
+    \begin{algorithmic}
+        \State $delta \gets 2^{-52}$
+        \For{ $k$ in $2^{-52} - 1$}
+        	\State $x \gets 1 + k * \delta$
+            \If{$(x * \frac{1}{x}) \neq 1 $}
+                \State \textbf{return} $x$
+            \EndIf
+        \EndFor
+    \end{algorithmic}
+    \end{algorithm}
+\subsection{Wyniki}
+	Najmniejsza znaleziona wartość:
+	1.000000057228997
+
+\section{Zadanie 5}
+\subsection{Opis problemu}
+    Obliczenie iloczynu skalarnego dwóch wektorów:\\
+    x = [2.718281828, -3.141592654, 1.414213562, 0.5772156649, 0.3010299957]\\
+    y = [1486.2497, 878366.9879, -22.37492, 4773714.647, 0.000185049]\\
+    używając pojedyńczej i podwójnej precyzji
+\subsection{Rozwiązanie}
+    \begin{enumerate}
+        \item "w przód" t.j. $\sum^n_{i=1} x_i y_i$
+        \item "w tył" t.j. $\sum^1_{i=n} x_i y_i$
+        \item "liczby dodatnie od najwiekszego do najmniejszego a ujemne na odwrót"
+        \item "liczby ujemne od najwiekszego do najmniejszego a dodatnie na odwrót"
+    \end{enumerate}
+\subsection{Wyniki}
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|}
+        \hline
+            Źródło & Float32 & Float64 & Prawidłowy wynik \\
+            \hline\hline
+            "1" & -0.4999443 & 1.0251881368296672e-10 & -1.00657107000000e-11\\
+             \hline
+             "2" & -0.4543457 & -1.5643308870494366e-10 & -1.00657107000000e-11\\
+             \hline
+             "3"& -0.5 & 0.0 & -1.00657107000000e-11\\
+             \hline
+             "4"& -0.5 & 0.0 & -1.00657107000000e-11\\
+        \hline
+        \end{tabular}
+    \end{center}
+
+\section{Zadanie 6}
+\subsection{Opis problemu}
+    Policzenie wartości w arytmetyce Float64 następujących funkcji:\\
+    \begin{center}
+        $f(x)=\sqrt{x^2 + 1} - 1$\\ $g(x)=\frac{x^2}{\sqrt{x^2 +1}+1}$
+    \end{center}
+\subsection{Wyniki}
+        \begin{center}
+        \begin{tabular}{|c||c|c|}
+        \hline
+            $x$ & $f(x)$ & $g(x)$ \\
+            \hline\hline
+            $8^{-1}$ & -0.0077822185373186414 & 0.0077822185373187065 \\
+            \hline
+            $8^{-2}$ & 0.00012206286282867573 & 0.00012206286282875901\\
+            \hline
+            $8^{-3}$ & 1.9073468138230965e-6 & 1.907346813826566e-6\\
+            \hline
+            $8^{-4}$ & 2.9802321943606103e-8 & 2.9802321943606116e-8\\
+            \hline
+            $8^{-5}$ & 4.656612873077393e-10 & 4.6566128719931904e-10\\
+            \hline
+            $8^{-6}$ & 7.275957614183426e-12 & 7.275957614156956e-12\\
+            \hline
+            $8^{-7}$ & 1.1368683772161603e-13 & 1.1368683772160957e-13\\
+            \hline
+            $8^{-8}$ & 1.7763568394002505e-15 & 1.7763568394002489e-15\\
+            \hline
+            $8^{-9}$ & 0.0 & 2.7755575615628914e-17\\
+            \hline
+            $8^{-10}$ & 0.0 & 4.336808689942018e-19\\
+        \hline
+        \end{tabular}
+    \end{center}
+\subsection{Wnioski}
+    Funkcja $f(x)$ zwróciła jeden ujemny wynik co nie jest możliwe, do tego od pewnego momentu zwraca wynik 0.0 co jest mało dokładne, stąd wniosek, że funkcja $g(x)$ wydaje się być bardziej wiarygodna.
+
+\section{Zadanie 7}
+\subsection{Opis problemu}
+    Przybliżoną wartość pochodnej $f(x)$ w punkcie $x$ można obliczyć za pomocą następującego wzoru:\\
+    \begin{center}
+        $f^{'}(x_0)\approx\tilde{f^{'}}(x_0) = \frac{f(x_0+h) - f(x_0)}{h}$
+    \end{center}
+    Korzystając z tego wzoru do obliczania w arytmetyce Float64 przybliżonej wartości pochodnej funckji $f(x)=sinx+cos3x$ w punkcie $x_0 = 1$ oraz obliczamy błędy $|f^{'}(x_0) - \tilde{f^{'}}(x_0)|$ dla $h=2^{-n}$ (n = 0, 1, 2, ..., 54)
+\subsection{Wyniki}
+	\begin{center}
+        \begin{tabular}{|c||c|c|}
+        \hline
+            $h$ & aproksymacja & różnica od pochodnej\\
+            \hline\hline
+            $2^{-3}$ & 0.6232412792975817 & 0.5062989976090435\\
+            \hline
+            $2^{-7}$ & 0.1484913953710958 & 0.03154911368255764\\
+            \hline
+            $2^{-12}$ & 0.11792723373901026 & 0.0009849520504721099\\
+            \hline
+            $2^{-31}$ & 0.11694216728210449 & 1.1440643366000813e-7\\
+            \hline
+            $2^{-32}$ & 0.11694192886352539 & 3.5282501276157063e-7\\
+        \hline
+        \end{tabular}
+    \end{center}
+\subsection{Wnioski}
+    W wynikach możemy zaobserować ze od pewnego momentu zmniejszanie wartości $h$ wcale nie poprawia przybliżenia wartości pochodnej. Dzieje sie tak prawdopodbnie przez coraz to mniejsze wartości co może powodować problemy w arytmetyce zmiennoprzecinkowej.
 
 \end{document}
