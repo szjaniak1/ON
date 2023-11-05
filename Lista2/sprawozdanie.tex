@@ -104,6 +104,29 @@
 
 \section*{Zadanie 5}
 \subsection*{Opis problemu}
+	Rozważmy równanie rekurencyjne \\
+	\centerline{$p_{n+1} := p_n^2 + rp_n(1 - p_n)$ dla $n = 0, 1...,$ \\}
+	gdzie $r$ jest pewną daną stałą, $r(1 - p_n)$ jest czynnikiem wzrostu populacji, a $p_0$ jest wielkością populacji stanowiącą procent maksymalnej wielkości populacji dla danego stanu środowiska. \\
+	Przeprowadzić następujące eksperymenty:
+	\begin{enumerate}
+        \item Dla danych $p_0 = 0.01$ i $r = 3$ wykonać 40 iteracji wyrażenia (1), a następnie wykonać ponownie 40 iteracji wyrażenia (1) z niewielką modyfikacją tj. wykonać 10 iteracji, zatrzymać, zastosować obcięcie wyniku odrzucając cyfry po trzecim miejscu po przecinku (daje to liczbę 0.722) i kontynuować dalej obliczenia (do 40-stej iteracji) tak, jak gdyby był to ostatni wynik na wyjściu. Porównać otrzymane wyniki.
+        \item Dla danych $p_0 = 0.01$ i $r = 3$ wykonać 40 iteracji wyrażenia (1) w arytmetyce Float32 i Float64. Porównać otrzymane wyniki.
+    \end{enumerate}
+\subsection*{Wyniki}
+	\begin{figure}[H]
+		\centering
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/5.1.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/5.2.png}
+		\end{subfigure}
+	\end{figure}
+\subsection*{Wnioski}
+	W pierwszym eksperymencie możemy zauważyć, że obcięcie wyniku do 3 miejsc po przecinku powoduje po chwili znaczne rozjechanie się wyników. \\
+	W drugim eksperymencie zjawisko jest podobne, większa precyzja pozwala na dokładniejsze wyniki, co również powoduje znaczne rozjechanie się wyników. \\
+	Pokazuje to jak bardzo wyniki naszych obliczeń mogą się różnić w zależności od odpowiednio dobranej precyzji.
+	
 
 \section*{Zadanie 6}
 \subsection*{Opis problemu}
