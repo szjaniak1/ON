@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\title{%
+	Obliczenia naukowe \\
+	\large Lista 2}
+\author{Szymon Janiak}
+\begin{document}
+\maketitle
+
+\section{Zadanie 1}
+\subsection{Opis problemu}
+    Obliczenie iloczynu skalarnego róznymi funkcjami dwóch wektorów i porównanie wyników przy lekkiej zmianie danych wejściowych
+\subsection{Rozwiązanie}
+    \begin{enumerate}
+        \item "w przód" t.j. $\sum^n_{i=1} x_i y_i$
+        \item "w tył" t.j. $\sum^1_{i=n} x_i y_i$
+        \item "liczby dodatnie od najwiekszego do najmniejszego a ujemne na odwrót"
+        \item "liczby ujemne od najwiekszego do najmniejszego a dodatnie na odwrót"
+    \end{enumerate}
+\subsection{Wyniki}
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|}
+        \hline
+            & Float64 stare dane & Float64 nowe dane & Prawidłowy wynik \\
+            \hline\hline
+            "1" & 1.0251881368296672e-10 & -0.004296342739891585 & -1.00657107000000e-11\\
+             \hline
+             "2" & -1.5643308870494366e-10 & -0.004296342998713953 & -1.00657107000000e-11\\
+             \hline
+             "3" & 0.0 & -0.004296342842280865 & -0.004296342842280865 \\
+             \hline
+             "4" & 0.0 & -0.004296342842280865 & -0.004296342842280865 \\
+        \hline
+        \end{tabular}
+    \end{center}
+\subsection{Wnioski}
+	Przy usunięciu ostatniej 9 z $x_4$ oraz ostatniej 7 z $x_5$ dostajemy różne wyniki dla podwójnej precyzji.
+	Po tak lekkiej zmianie danych możemy zauważyć, że wyniki dla wszystkich funkcji są znacznie bardziej przybliżone, prawie identyczne.
+	Dla Float32 nie ma żadnej różnicy, gdyż jest to za mała precyzja. Według definicji jest to źle uwarunkowane zadanie.
+
+\section{Zadanie 2}
+
+\end{document}
