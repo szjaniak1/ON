@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage[a4paper, total={6in, 11in}]{geometry}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -73,6 +74,36 @@
 	Mimo, że funkcja dąży do 1 nasze programy mają wyraźny problem z obliczaniem wartości składających się na wynik naszej funkcji.
 	Jest to prawdopodobnie spowodowane brakiem wystarczającej precyzji kiedy wartości $e^{-x}$ robią się coraz mniejsze.
 
+\section*{Zadanie 3}
+\subsection*{Opis problemu}
+
+\section*{Zadanie 4}
+\subsection*{Opis problemu}
+	Użyć funkcji $roots$ (z pakietu Polynomials) do obliczenia 20 zer wielominau $P$ w postaci naturalnej. \\
+	$P$ jest postacią naturalną wielomianu Wilkinsona $p$ \\
+	$p(x) = (x - 20)(x - 19)(x - 18)(x - 17)(x - 16)(x - 15) \\
+			(x - 14)(x - 13)(x - 12)(x - 11)(x - 10)(x - 9) \\
+			(x - 8)(x - 7)(x - 6)(x - 5)(x - 4)(x - 3)(x - 2)(x - 1)$
+\subsection*{Wyniki}
+	\begin{figure}[H]
+		\centering
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/4.1.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/4.2.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/4.3.png}
+		\end{subfigure}
+	\end{figure}
+\subsection*{Wnioski}
+	Po wykresach widać, że obliczone przez nas miejsca zerowe nie pokrywają się z rzeczywistością. \\
+	Wynika to z ograniczeń arytmetyki w Float64, która ma od 15 do 17 cyfr znaczących w systemie dziesiętnym. \\
+	Po modyfikacji jednego współczynnika rozbieżności mogą być jeszcze większe.
+
+\section*{Zadanie 5}
+\subsection*{Opis problemu}
 
 \section*{Zadanie 6}
 \subsection*{Opis problemu}
