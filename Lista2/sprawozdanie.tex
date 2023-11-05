@@ -1,8 +1,12 @@
 \documentclass{article}
 \usepackage[T1]{fontenc}
-\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage[a4paper, total={6in, 11in}]{geometry}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+\def\v{0.47}
 
 \title{%
 	Obliczenia naukowe \\
@@ -43,5 +47,47 @@
 	Dla Float32 nie ma żadnej różnicy, gdyż jest to za mała precyzja. Według definicji jest to źle uwarunkowane zadanie.
 
 \section{Zadanie 2}
+
+\section{Zadanie 6}
+\subsection{Opis problemu}
+	Dla równania rekurencyjnego \\
+	\centerline{$x_{n+1} := x_n^2 + c$ dla $n = 0, 1...,$ \\}
+	Przeprowadzić następujące eksperymenty. Dla danych:
+	\begin{enumerate}
+        \item $c = -2$ i $x_0 = 1$
+        \item $c = -2$ i $x_0 = 2$
+        \item $c = -2$ i $x_0 = 1.99999999999999$
+        \item $c = -1$ i $x_0 = 1$
+        \item $c = -1$ i $x_0 = -1$
+        \item $c = -1$ i $x_0 = 0.75$
+        \item $c = -1$ i $x_0 = 0.25$
+    \end{enumerate}
+    wykonać w arytmetyce Float64, 40 iteracji podanego wyrażenia i przeprowadzić iteracje graficzną.
+\subsection{Wyniki}
+	\begin{figure}[h!]
+		\centering
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/1.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/2.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/3.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/4.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/5.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/6.png}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/7.png}
+		\end{subfigure}
+	\end{figure}
+\subsection{Wnioski}
 
 \end{document}
