@@ -1,7 +1,7 @@
 #=
 Szymon Janiak 268514
 Obliczenia Naukowe
-Lista 2, zadanie 5
+Lista 2, zadanie 3
 =#
 
 using LinearAlgebra
