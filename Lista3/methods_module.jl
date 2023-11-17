@@ -1,3 +1,9 @@
+#=
+Szymon Janiak 268514
+Obliczenia Naukowe
+Lista 3, zadnanie 1, 2, 3
+=#
+
 module methods
 
 export mbisekcji
@@ -74,9 +80,31 @@ function mbisekcji(f::Function, a::Float64, b::Float64, delta::Float64, epsilon:
 	return c, val, it, err
 end
 
-function msiecznych(f::Function, x0::Float64, delta::Float64, epsilon::Float64, maxit::UInt64)
-	err::UInt8
-	
+function msiecznych(f::Function, x0::Float64, x1::Float64, delta::Float64, epsilon::Float64, maxit::UInt64)
+	err::UInt8 = 0
+	it::UInt64 = 0
+	val::Float64 = f(x0)
+	val_next::Float64 = f(x1)
+
+	for it in 1:maxit
+		if abs(val) > abs(val_next)
+			x0, x1 = x1, x0
+		end
+
+		d = (x1 - x0) / (val_next - val)
+		x1 = x0
+		val_next = val
+
+		x0 = x0 - d * val
+		val = f(x0)
+
+		if abs(val) < epsilon || abs(x1 - x0) < delta
+			return x0, val, it, err
+		end
+	end
+
+	err = 1
+	return x0, val, it, err
 end
 
 end
