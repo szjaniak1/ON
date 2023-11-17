@@ -6,13 +6,18 @@ Lista 3, zadnanie 1, 2, 3
 
 module methods
 
-export mbisekcji
-export mstycznych
-export msiecznych
+export bisection_method, newton_method, secant_method
+export bisection_error_codes, newton_error_codes, secant_error_codes
+export fl
 
+fl = Float64
 NEAR_ZERO = 2^(-2.0^32)
 
-function mstycznych(f::Function, pf::Function, x0::Float64, delta::Float64, epsilon::Float64, maxit::UInt64)
+const bisection_error_codes = ["no error", "function doesnt change sign in the [a, b] interval"]
+const newton_error_codes = ["convergent method", "the required accuracy was not achieved in the maxit iteration", "derivative close to zero"]
+const secant_error_codes = ["convergent method", "the required accuracy was not achieved in the maxit iteration"]
+
+function newton_method(f::Function, pf::Function, x0::Float64, delta::Float64, epsilon::Float64, maxit::UInt64)
 	err::UInt8 = 0
 	it::UInt64 = 0
 	x1::Float64 = 0.0
@@ -44,67 +49,70 @@ function mstycznych(f::Function, pf::Function, x0::Float64, delta::Float64, epsi
 	return x0, val, it, err
 end
 
-function mbisekcji(f::Function, a::Float64, b::Float64, delta::Float64, epsilon::Float64)
+function bisection_method(f::Function, a::Float64, b::Float64, delta::Float64, epsilon::Float64)
 	err::UInt8 = 0
 	it::UInt64 = 0
 	val::Float64 = 0.0
 	e::Float64 = b - a
-	c::Float64 = (1 / 2)  * (a + b)
+	r::Float64 = (1 / 2)  * (a + b)
 
 	u::Float64 = f(a)
 	v::Float64 = f(b)
 	if sign(u) == sign(v)
 		err = 1
-		return c, val, it, err
+		return r, val, it, err
 	end
 
-	while abs(e) > epsilon && abs(f(c)) > delta
+	while abs(e) > epsilon && abs(f(r)) > delta
 		e = e / 2
-		c = a + e
-		val = f(c)
+		r = a + e
+		val = f(r)
 		it = it + 1
 
 		if abs(e) < delta || abs(val) < epsilon
-			return c, val, it, err
+			return r, val, it, err
 		end
 
 		if sign(val) != sign(u)
-			b = c
+			b = r
 			v = val
 		else
-			a = c
+			a = r
 			u = val
 		end
 	end
 
-	return c, val, it, err
+	return r, val, it, err
 end
 
-function msiecznych(f::Function, x0::Float64, x1::Float64, delta::Float64, epsilon::Float64, maxit::UInt64)
+function secant_method(f::Function, x0::Float64, x1::Float64, delta::Float64, epsilon::Float64, maxit::UInt64)
 	err::UInt8 = 0
 	it::UInt64 = 0
 	val::Float64 = f(x0)
 	val_next::Float64 = f(x1)
+	a::Float64 = x0
+	b::Float64 = x1
 
-	for it in 1:maxit
+	for it in 0:maxit
 		if abs(val) > abs(val_next)
-			x0, x1 = x1, x0
+			a, b = b, a
+			val, val_next = val_next, val
 		end
 
-		d = (x1 - x0) / (val_next - val)
-		x1 = x0
+		d = (b - a) / (val_next - val)
+		b = a
 		val_next = val
 
-		x0 = x0 - d * val
-		val = f(x0)
+		a = a - d * val
+		val = f(a)
 
-		if abs(val) < epsilon || abs(x1 - x0) < delta
-			return x0, val, it, err
+		if abs(val) < epsilon || abs(b - a) < delta
+			return a, val, it, err
 		end
 	end
 
 	err = 1
-	return x0, val, it, err
+	return a, val, it, err
 end
 
 end
