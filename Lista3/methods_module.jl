@@ -1,7 +1,7 @@
 #=
 Szymon Janiak 268514
 Obliczenia Naukowe
-Lista 3, zadnanie 1, 2, 3
+Lista 3, zadanie 1, 2, 3
 =#
 
 module methods

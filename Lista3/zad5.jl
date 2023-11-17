@@ -1,7 +1,7 @@
 #=
 Szymon Janiak 268514
 Obliczenia Naukowe
-Lista 3, zadnanie 5
+Lista 3, zadanie 5
 =#
 
 include("./methods_module.jl")
