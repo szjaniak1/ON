@@ -3,8 +3,8 @@ Szymon Janiak 268514
 Obliczenia Naukowe
 Lista 3, zadanie 1
 =#
-include("./mbisekcji.jl")
-using .bisekcji
+include("./methods_module.jl")
+using .methods
 
 function func(x::Float64)
 	return 2 * x - 10
