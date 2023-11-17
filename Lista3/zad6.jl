@@ -103,3 +103,19 @@ println("----secant_func2_second_root----\n",
 		"f(r) = ", val2, "\n",
 		"it = ", it2, "\n",
 		secant_error_codes[err2 + 1])
+
+println("\n----edge_cases----\n")
+
+r1, val1, it1, err1 = newton_method(func1, func1_prime, fl(10.0), delta, epsilon, maxit)
+println("----newton_func1_edge_case----\n",
+		"r = ", r1, "\n",
+		"f(r) = ", val1, "\n",
+		"it = ", it1, "\n",
+		newton_error_codes[err1 + 1])
+
+r1, val1, it1, err1 = newton_method(func2, func2_prime, fl(1000.0), delta, epsilon, maxit)
+println("----newton_func2_edge_case----\n",
+		"r = ", r1, "\n",
+		"f(r) = ", val1, "\n",
+		"it = ", it1, "\n",
+		newton_error_codes[err1 + 1])
