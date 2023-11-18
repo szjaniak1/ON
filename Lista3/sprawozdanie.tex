@@ -38,7 +38,7 @@
 	\end{itemize}
 \subsubsection*{Rozwiązanie}
 	\begin{algorithm}[H]
-	\caption{bisection method}\label{alg:cap}
+	\caption{bisection method}
 	\begin{algorithmic}
 		\State $val \gets 0$
         \State $it \gets 0$
@@ -99,7 +99,7 @@
 	\end{itemize}
 \subsubsection*{Rozwiązanie}
 	\begin{algorithm}[H]
-	\caption{Newton method}\label{alg}
+	\caption{Newton method}
 	\begin{algorithmic}
 		\State $val \gets f(x_0)$
         \State $val_prime \gets 0$
@@ -131,5 +131,60 @@
         \State return $x_0, val, it, err$
     \end{algorithmic}
     \end{algorithm}
+\clearpage
 
+\section*{Zadanie 3}
+\subsection*{Opis problemu}
+	Napisać funkcję rozwiązującą równanie $f(x) = 0$ metodą siecznych.
+\subsubsection*{Dane wejściowe}
+	\begin{itemize}
+	    \item \texttt{f} — funkcja $f$ w postaci anonimowej funkcji
+	    \item \texttt{x0,x1} — przybliżenia początkowe
+	    \item \texttt{delta, epsilon} — liczby typu \texttt{Float64} określające dokładności obliczeń
+	    \item \texttt{maxit} — liczba całkowita określająca dopuszczalną liczbę iteracji
+	\end{itemize}
+\subsubsection*{Dane wyjściowe}
+	Czwórka wartości \texttt{(r,v,it,err)}.
+	\begin{itemize}
+	    \item \texttt{r} — przybliżenie pierwiastka równania $f(x) = 0$
+	    \item \texttt{v} — wartość funkcji w $r$
+	    \item \texttt{it} — liczba wykonanych iteracji
+	    \item \texttt{err} — sygnalizacja błędu, możliwe wartości:
+	    \begin{itemize}
+	        \item \texttt{0} — metoda zbieżna
+	        \item \texttt{1} — nie osiągnięto wymaganej dokładności w \texttt{maxit} iteracji
+	    \end{itemize}
+	\end{itemize}
+\subsubsection*{Rozwiązanie}
+	\begin{algorithm}[H]
+	\caption{secant method}
+	\begin{algorithmic}
+		\State $it \gets 0$
+		\State $a \gets x_0$
+		\State $b \gets x_1$
+		\State $val \gets f(x_0)$
+		\State $val next \gets f(x_1)$
+
+		\For{ $it$ to $maxit$}
+			\If{ $abs(val) > abs(val next)$}
+				\State $a, b = b, a$
+				\State $val, val next = val next, val$
+			\EndIf
+
+			\State $d \gets \frac{b - a}{val next - val}$
+			\State $b \gets a$
+			\State $val next \gets val$
+
+			\State $a \gets a - d * val$
+			\State $val \gets f(a)$
+
+			\If{ $abs(val) < \epsilon$ or $abs(b - a) < delta$}
+				\State return $a, val, it ,err$
+			\EndIf
+		\EndFor
+
+		\State $err \gets 1$
+		\State return $a, val, it, err$
+    \end{algorithmic}
+    \end{algorithm}
 \end{document}
