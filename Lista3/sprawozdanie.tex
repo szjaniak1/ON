@@ -20,7 +20,62 @@
 
 \section*{Zadanie 1}
 \subsection*{Opis problemu}
-	Napisać funkcję rozwiązującą równanie $f(x) = 0$ metoda bisekcji
-	Dane:
+	Napisać funkcję rozwiązującą równanie $f(x) = 0$ metodą bisekcji.
+\subsubsection*{Dane wejściowe}
+	\begin{itemize}
+	    \item \texttt{f} — funkcja $f$ w postaci anonimowej funkcji
+	    \item \texttt{a,b} — liczby typu \texttt{Float64} określające końce przedziału początkowego
+	    \item \texttt{delta, epsilon} — liczby typu \texttt{Float64} określające dokładności obliczeń
+	\end{itemize}
+
+	Czwórka wartości \texttt{(r, val, it, err)}.
+
+	\begin{itemize}
+	    \item \texttt{r} — przybliżenie pierwiastka równania $f(x) = 0$
+	    \item \texttt{v} — wartość funkcji w $r$
+	    \item \texttt{it} — liczba wykonanych iteracji
+	    \item \texttt{err} — sygnalizacja błędu, możliwe wartości:
+	    \begin{itemize}
+	        \item \texttt{0} — brak błędu
+	        \item \texttt{1} — funkcja nie zmienia znaku w przedziale $[a;b]$
+	    \end{itemize}
+	\end{itemize}
+
+\subsubsection*{Rozwiązanie}
+	\begin{algorithm}[H]
+	\caption{bisection method}\label{alg:cap}
+	\begin{algorithmic}
+		\State $val \gets 0$
+        \State $u \gets f(a)$
+        \State $v \gets f(b)$
+        \If{ $sign(u) == sign(v)$}
+        	\State $err \gets 1$
+        	\State return 
+        \EndIf
+
+        \State $it \gets 0$
+        \State $e \gets b - a$
+        \State $r \gets \frac{1}{2} * (a + b)$
+        \While{$abs(e) > \epsilon$ and $abs(f(r)) > \delta$}
+        	\State $e \gets frac{e}{2}$
+        	\State $r \gets a + e$
+        	\State $val \gets f(r)$
+        	\State $it \gets it + 1$
+        	\If{ $abs(e) < \delta$ or $abs(val) < \epsilon$ }
+        		\State return $r, val, it, err$
+        	\EndIf
+
+        	\If{ $sign(val) \neq sign(u)$ }
+        		\State $g \gets r$
+        		\State $v \gets val$
+        	\Else
+        		\State $a \gets r$
+        		\State $u \gets val$
+        	\EndIf
+        \EndWhile
+
+        \State return $r, val, it, err$
+    \end{algorithmic}
+    \end{algorithm}
 
 \end{document}
