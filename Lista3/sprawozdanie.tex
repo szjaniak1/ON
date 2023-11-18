@@ -9,8 +9,6 @@
 \usepackage{graphicx}
 \usepackage{subcaption}
 
-\def\v{0.47}
-
 \title{%
 	Obliczenia naukowe \\
 	\large Lista 3}
@@ -27,35 +25,32 @@
 	    \item \texttt{a,b} — liczby typu \texttt{Float64} określające końce przedziału początkowego
 	    \item \texttt{delta, epsilon} — liczby typu \texttt{Float64} określające dokładności obliczeń
 	\end{itemize}
-
 	Czwórka wartości \texttt{(r, val, it, err)}.
-
 	\begin{itemize}
 	    \item \texttt{r} — przybliżenie pierwiastka równania $f(x) = 0$
 	    \item \texttt{v} — wartość funkcji w $r$
 	    \item \texttt{it} — liczba wykonanych iteracji
-	    \item \texttt{err} — sygnalizacja błędu, możliwe wartości:
+	    \item \texttt{err} — sygnalizacja błędu, możliwe wartości:
 	    \begin{itemize}
 	        \item \texttt{0} — brak błędu
 	        \item \texttt{1} — funkcja nie zmienia znaku w przedziale $[a;b]$
 	    \end{itemize}
 	\end{itemize}
-
 \subsubsection*{Rozwiązanie}
 	\begin{algorithm}[H]
 	\caption{bisection method}\label{alg:cap}
 	\begin{algorithmic}
 		\State $val \gets 0$
-        \State $u \gets f(a)$
-        \State $v \gets f(b)$
-        \If{ $sign(u) == sign(v)$}
-        	\State $err \gets 1$
-        	\State return 
-        \EndIf
-
         \State $it \gets 0$
         \State $e \gets b - a$
+        \State $u \gets f(a)$
+        \State $v \gets f(b)$
         \State $r \gets \frac{1}{2} * (a + b)$
+        \If{ $sign(u) = sign(v)$}
+        	\State $err \gets 1$
+        	\State return $r, val, it, err$
+        \EndIf
+
         \While{$abs(e) > \epsilon$ and $abs(f(r)) > \delta$}
         	\State $e \gets frac{e}{2}$
         	\State $r \gets a + e$
@@ -75,6 +70,65 @@
         \EndWhile
 
         \State return $r, val, it, err$
+    \end{algorithmic}
+    \end{algorithm}
+
+\section*{Zadanie 2}
+\subsection*{Opis problemu}
+	Napisać funkcję rozwiązującą równanie $f(x) = 0$ metodą Newtona.
+\subsubsection*{Dane wejściowe}
+	\begin{itemize}
+	    \item \texttt{f} — funkcja $f$ w postaci anonimowej funkcji
+	    \item \texttt{pf} — pochodna funkcji $f$ w postaci anonimowej funkcji
+	    \item \texttt{x0} — przybliżenie początkowe
+	    \item \texttt{delta, epsilon} — liczby typu \texttt{Float64} określające dokładności obliczeń
+	    \item \texttt{maxit} — liczba całkowita określająca dopuszczalną liczbę iteracji
+	\end{itemize}
+\subsubsection*{Dane wyjściowe}
+	Czwórka wartości \texttt{(r, v, it, err)}.
+	\begin{itemize}
+	    \item \texttt{r} — przybliżenie pierwiastka równania $f(x) = 0$
+	    \item \texttt{v} — wartość funkcji w $r$
+	    \item \texttt{it} — liczba wykonanych iteracji
+	    \item \texttt{err} — sygnalizacja błędu, możliwe wartości:
+	    \begin{itemize}
+	        \item \texttt{0} — metoda zbieżna
+	        \item \texttt{1} — nie osiągnięto wymaganej dokładności w \texttt{maxit} iteracji
+	        \item \texttt{2} — pochodna bliska zeru
+	    \end{itemize}
+	\end{itemize}
+\subsubsection*{Rozwiązanie}
+	\begin{algorithm}[H]
+	\caption{Newton method}\label{alg}
+	\begin{algorithmic}
+		\State $val \gets f(x_0)$
+        \State $val_prime \gets 0$
+        \State $x_1 \gets 0$
+        \State $it \gets 1$
+        \If{ $abs(v) < \epsilon$}
+        	\State $err \gets 0$
+        	\State return $x_0, val, it, err$
+        \EndIf
+
+        \For{ $it$ to $maxit$ }
+        	\State $val_prime \gets pf(x_0)$
+        	\State $x_1 = x_0 - frac{val}{val_prime}$
+        	\State $val \gets f(x_1)$
+
+        	\If{ $abs(val_prime) \le NEAR ZERO$ or $isInf(abs(val_prime))$}
+        		\State $err \gets 2$
+        		\State return $x_0, f(x_0), it, err$
+        	\EndIf
+
+        	\If{ $abs(x_1 - x_0) < \delta$ or $abs(val) < \epsilon$}
+        		\State return return $x_1, val, it, err$
+        	\EndIf
+
+        	\State $x_0 \gets x_1$
+        \EndFor
+
+        \State $err \gets 1$
+        \State return $x_0, val, it, err$
     \end{algorithmic}
     \end{algorithm}
 
