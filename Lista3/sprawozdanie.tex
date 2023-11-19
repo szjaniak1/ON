@@ -37,13 +37,13 @@
 	    \end{itemize}
 	\end{itemize}
 \subsubsection*{Opis algorytmu}
-	Metoda bisekcji polega na stopniowym zawężaniu przedziału szukania naszego pierwiastka do momentu, gdy nasz wynik będzie wystarczająco bliski, co do zależne jest od zdefiniowanego przez nas $\epsilon$.
+	Metoda bisekcji polega na stopniowym zawężaniu przedziału szukania naszego pierwiastka do momentu, gdy nasz wynik będzie wystarczająco bliski, co zależne jest od zdefiniowanego przez nas $\epsilon$.
 	Do zastosowania tej metody potrzebne są spełnione dwa założenia:
 	\begin{itemize}
 		\item funkcja \texttt{$f(x)$} jest ciągła w przedziale domkniętym $[a, b]$,
 		\item funkcja przyjmuje różne znaki na końcach przedziału.
 	\end{itemize}
-	Kolejne iteracje algorytmu przesuwają jedną z granic przedziału bliżej pierwiastka o połowe długości przedziału. Wybór końca do przesunięcia polega na sprawdzeniu które przesunięcie zwróci nam przedział, który spełnia warunek zmiany znaku w naszym nowym przedziale.
+	Kolejne iteracje algorytmu przesuwają jedną z granic przedziału bliżej pierwiastka o połowe długości przedziału. Wybór końca do przesunięcia polega na sprawdzeniu które przesunięcie zwróci nam przedział, który spełnia warunek zmiany znaku.
 \subsubsection*{Rozwiązanie}
 	\begin{algorithm}[H]
 	\caption{bisection method}
@@ -59,14 +59,11 @@
         	\State return $r, val, it, err$
         \EndIf
 
-        \While{$|e| > \epsilon$ and $|f(r)| > \delta$}
+        \While{$|e| > \delta$ and $|f(r)| > \epsilon$}
         	\State $e \gets frac{e}{2}$
         	\State $r \gets a + e$
         	\State $val \gets f(r)$
         	\State $it \gets it + 1$
-        	\If{ $|e| < \delta$ or $|val| < \epsilon$ }
-        		\State return $r, val, it, err$
-        	\EndIf
 
         	\If{ $sign(val) \neq sign(u)$ }
         		\State $g \gets r$
@@ -80,6 +77,8 @@
         \State return $r, val, it, err$
     \end{algorithmic}
     \end{algorithm}
+
+\clearpage
 
 \section*{Zadanie 2}
 \subsection*{Opis problemu}
@@ -106,7 +105,7 @@
 	    \end{itemize}
 	\end{itemize}
 \subsubsection*{Opis algorytmu}
-	W tym algorytmie potrzebujemy założyć, że w naszym przedziale $[a, b]$ znajduje sie dokładnie jeden pierwiastek funkcji $f$, oraz różne znaki funkcji na krańcach przedziału. Dodatkowym wymaganiem jest stały znak pierwszej i drugiej pochodnej funkcji w tym przedziale.
+	W tym algorytmie potrzebujemy założyć, że w naszym przedziale $[a, b]$ znajduje sie dokładnie jeden pierwiastek funkcji $f$, oraz, że funkcja przyjmu wartości różnych znaków na krańcach przedziału. Dodatkowym wymaganiem jest stały znak pierwszej i drugiej pochodnej funkcji w tym przedziale.
 	Na początku przyjmujemy sobie za $x_1$ granicę $a$ lub $b$ i wyznaczamy równanie stycznej do wykresu funkcji w punkcie $[x_1, f(x_1)]$, następnie wyznaczamy odciętą $x_2$ punktu przecięcia tej stycznej z osią OX - w ten sposób otrzymujemy kolejne przybliżenie naszego rozwiązania.\tabularnewline
 	Całą procedurę powtarzamy do momentu gdy otrzymamy wynik mieszczący się w naszym $\epsilon$ tworząc kolejne styczne.
 \subsubsection*{Rozwiązanie}
@@ -127,7 +126,7 @@
         	\State $x_1 = x_0 - \frac{val}{val\_prime}$
         	\State $val \gets f(x_1)$
 
-        	\If{ $|val\_prime| \le NEAR\_ZERO$ or $IsInf(|val\_prime|)$}
+        	\If{ $|val\_prime| < \epsilon $}
         		\State $err \gets 2$
         		\State return $x_0, f(x_0), it, err$
         	\EndIf
@@ -208,9 +207,9 @@
 \subsection*{Opis problemu}
 	Należy obliczyć pierwiastek równania $\sin x - \left(\frac{1}{2} x\right)^2 = 0$ przy pomocy wcześniej zaprogramowanych metod:
 	\begin{itemize}
-	    \item metoda bisekcji z przedziałem początkowym $[1.5;2]$
+	    \item metoda bisekcji z przedziałem początkowym $[1.5, 2]$
 	    \item metoda Newtona z przybliżeniem początkowym $x_0 = 1.5$
-	    \item metoda siecznych z przybliżeniami początkowymi $x_0 = 1$, $x_1 = 2$
+	    \item metoda siecznych z przybliżeniami początkowymi $x_0 = 1$, $x_1 = 2.0$
 	\end{itemize}
 \noindent i precyzją $\delta = \frac{1}{2} 10^{-5}$, $\epsilon = \frac{1}{2} 10^{-5}$.
 \subsection*{Wyniki}
@@ -238,6 +237,8 @@
 \subsubsection*{Wnioski}
 	Wszystkie metody zwróciły nam bardzo podobne rezultaty jeśli chodzi o wartość naszego przybliżonego pierwiastka, który w rzeczywistości wynosi 2. Możemy natomiast zauważyć różnice w ilości przeprowadzonych iteracji. Dla metody Newtona oraz siecznych jest to kolejno 4 i 3 co jest bardzo dobrym wynikiem. Odstaje tutaj metoda bisekcji, która musiała wykonać aż 16 iteracji, gdyż jest metodą globalną i powoli, liniowo zbliża się do pierwiastka. Zaletą jej jednak jest to, że do jej użycia potrzebujemy mniej informacji początkowych.
 
+\clearpage
+
 \section*{Zadanie 5}
 \subsection*{Opis problemu}
 	Należy wyznaczyć punkt, w którym przecinają się funkcje $y = 3x$ oraz $y = e^x$. Dokładność obliczeń wynosi: $\delta = 10^{-4}$, $\epsilon = 10^{-4}$. Należy użyć metody bisekcji.
@@ -259,5 +260,93 @@
 \subsection*{Wnioski}
 	Wyniki pokrywają się z rzeczywistością.
 
+\clearpage
+
 \section*{Zadanie 6}
+\subsection*{Opis problemu}
+	Należy znaleźć miejsca zerowe funkcji:
+	\begin{itemize}
+		\item $f_1(x) = e^{1-x} - 1$ 
+		\item $f_2(x) = xe^{-x}$
+	\end{itemize}
+	za pomocą metod bisekcji, Newtona i siecznych. Wymagane dokładności obliczeń: $\delta = 10^{-5}$, $\epsilon = 10^{-5}$. Sprawdzić co się stanie, gdy w metodzie Newtona dla $f_1$ wybierzemy $x_0 \in (1; \infty]$, a dla $f_2$ wybierzemy $x_0 > 1$, czy możemy wybrać $x_0 = 1$ dla $f_2$?
+\subsection*{Wyniki dla $f_1$}
+\subsubsection*{Metoda bisekcji}
+	Dla $a = 0.4$ oraz $b = 1.4$
+	\begin{itemize}
+		\item pierwiastek, $r = 1.000006103515625$
+	    \item wartość funkcji, $f(r) = -6.103496998477453 \cdot 10^{-6}$
+	    \item liczba iteracji, $it = 15$
+	    \item brak błędu, $\mathrm{err} = 0$
+	\end{itemize}
+\subsubsection*{Metoda Newtona}
+	Dla $x_0 = 0.8$
+	\begin{itemize}
+		\item pierwiastek, $r = 0.9999999848053367$
+	    \item wartość funkcji, $f(r) = 1.5194663527395846 \cdot 10^{-8}$
+	    \item liczba iteracji, $it = 3$
+	    \item brak błędu, $\mathrm{err} = 0$
+	\end{itemize}
+\subsubsection*{Metoda siecznych}
+	Dla $x_0 = 0.2$ oraz $x_1 = 0.6$
+	\begin{itemize}
+		\item pierwiastek, $r = 0.9999999855368947$
+	    \item wartość funkcji, $f(r) = 1.4463105380002617 \cdot 10^{-6}$
+	    \item liczba iteracji, $it = 4$
+	    \item brak błędu, $\mathrm{err} = 0$
+	\end{itemize}
+\subsection*{Wyniki dla $f_2$}
+\subsubsection*{Metoda bisekcji}
+	Dla $a = -1.5$ oraz $b = 1.0$
+	\begin{itemize}
+		\item pierwiastek, $r = -3.814697265625 \cdot 10^{-6}$
+	    \item wartość funkcji, $f(r) = -3.814711817567984 \cdot 10^{-6}$
+	    \item liczba iteracji, $it = 17$
+	    \item brak błędu, $\mathrm{err} = 0$
+	\end{itemize}
+\subsubsection*{Metoda Newtona}
+	Dla $x_0 = -0.4$
+	\begin{itemize}
+		\item pierwiastek, $r = -1.8440313309425922 \cdot 10^{-8}$
+	    \item wartość funkcji, $f(r) = -1.844031364947108 \cdot 10^{-8}$
+	    \item liczba iteracji, $it = 4$
+	    \item brak błedu, $\mathrm{err} = 0$
+	\end{itemize}
+\subsubsection*{Metoda siecznych}
+	Dla $x_0 = -0.4$ oraz $x_1 = -0.2$
+	\begin{itemize}
+		\item pierwiastek, $r = -6.922503966219477 \cdot 10^{-6}$
+	    \item wartość funkcji, $f(r) = -6.922551887446507 \cdot 10^{-6}$
+	    \item liczba iteracji, $it = 3$
+	    \item brak błędu, $\mathrm{err} = 0$
+	\end{itemize}
+\subsection*{Wnioski dla powyższych wyników}
+	Na pewno możemy zauważyć podobna sytuację co w zadaniu 4. Metoda bisekcji musi wykonać znacznie więcej iteracji algorytmu aby znaleźć zadowalający wynik. Wszystkie algorytmy zwróciły zadowalające wyniki.
+\subsection*{Wyniki metody Newtona dla $f_1$ oraz $f_2$ przy dodatkowych założeniach}
+\subsubsection*{$f_1$ przy $x_0 \in (1, \infty)$}
+	$x_0 = 15.0$
+	\begin{itemize}
+		\item pierwiastek, $r = 15.0 \cdot 10^{6}$
+	    \item wartość funkcji, $f(r) = -0.9999991684712809$
+	    \item liczba iteracji, $it = 1$
+	    \item pochodna bliska zeru, $\mathrm{err} = 2$
+	\end{itemize}
+	Widzimy, że dostajemy błąd - pochodna bliska zeru.
+\subsubsection*{$f_2$ przy $x_0 > 1$}
+	$x_0 = 7.0$
+	\begin{itemize}
+		\item pierwiastek, $r = 14.792276940955892$
+	    \item wartość funkcji, $f(r) = 5.569686859646652 \cdot 10^{-6}$
+	    \item liczba iteracji, $it = 7$
+	    \item brak błedu, $\mathrm{err} = 0$
+	\end{itemize}
+	Można zauważyć, że pomimo braku błędu zwróconego przez program nasz wynik jest niepoprawny. Zarówno dla $f_1$ i $f_2$ przy $x_0 > 1$ występują problemy przy obliczaniu bardzo małych wartości $e^{-x}$ ze względu na ograniczenia arytmetyki.
+\subsubsection*{$f_2$ przy $x_0 = 1.0$}
+	\begin{itemize}
+		\item pierwiastek, $r = 1.0$
+	    \item wartość funkcji, $f(r) = 0.36787944117144233$
+	    \item liczba iteracji, $it = 1$
+	    \item pochodna bliska zeru, $\mathrm{err} = 2$
+	\end{itemize}
+	Przy $x_0 = 1.0$ dostajemy błędny wynik, gdyż $f_2(1) = 0$ przez co otrzymana styczna będzie równoległa do osi OX, co przeszkodzi algorytmowi w wyznaczeniu następnego punktu.
 \end{document}

@@ -11,7 +11,6 @@ export bisection_error_codes, newton_error_codes, secant_error_codes
 export fl
 
 fl = Float64
-NEAR_ZERO = 2^(-2.0^32)
 
 const bisection_error_codes = ["no error", "function doesnt change sign in the [a, b] interval"]
 const newton_error_codes = ["convergent method", "the required accuracy was not achieved in the maxit iteration", "derivative close to zero"]
@@ -35,7 +34,7 @@ function newton_method(f::Function, pf::Function, x0::Float64, delta::Float64, e
 		xn1 = xn - (val / val_prime)
 		val = f(xn1)
 
-		if abs(val_prime) <= NEAR_ZERO || isinf(abs(val_prime))
+		if abs(val_prime) < epsilon
 			err = 2
 			return xn, f(xn), it, err
 		end
@@ -65,15 +64,11 @@ function bisection_method(f::Function, a::Float64, b::Float64, delta::Float64, e
 		return r, val, it, err
 	end
 
-	while abs(e) > epsilon && abs(f(r)) > delta
+	while abs(e) > delta && abs(f(r)) > epsilon
 		e = e / 2
 		r = a + e
 		val = f(r)
 		it = it + 1
-
-		if abs(e) < delta || abs(val) < epsilon
-			return r, val, it, err
-		end
 
 		if sign(val) != sign(u)
 			b = r
