@@ -36,6 +36,14 @@
 	        \item \texttt{1} — funkcja nie zmienia znaku w przedziale $[a;b]$
 	    \end{itemize}
 	\end{itemize}
+\subsubsection*{Opis algorytmu}
+	Metoda bisekcji polega na stopniowym zawężaniu przedziału szukania naszego pierwiastka do momentu, gdy nasz wynik będzie wystarczająco bliski, co do zależne jest od zdefiniowanego przez nas $\epsilon$.
+	Do zastosowania tej metody potrzebne są spełnione dwa założenia:
+	\begin{itemize}
+		\item funkcja \texttt{$f(x)$} jest ciągła w przedziale domkniętym $[a, b]$,
+		\item funkcja przyjmuje różne znaki na końcach przedziału.
+	\end{itemize}
+	Kolejne iteracje algorytmu przesuwają jedną z granic przedziału bliżej pierwiastka o połowe długości przedziału. Wybór końca do przesunięcia polega na sprawdzeniu które przesunięcie zwróci nam przedział, który spełnia warunek zmiany znaku w naszym nowym przedziale.
 \subsubsection*{Rozwiązanie}
 	\begin{algorithm}[H]
 	\caption{bisection method}
@@ -97,6 +105,10 @@
 	        \item \texttt{2} — pochodna bliska zeru
 	    \end{itemize}
 	\end{itemize}
+\subsubsection*{Opis algorytmu}
+	W tym algorytmie potrzebujemy założyć, że w naszym przedziale $[a, b]$ znajduje sie dokładnie jeden pierwiastek funkcji $f$, oraz różne znaki funkcji na krańcach przedziału. Dodatkowym wymaganiem jest stały znak pierwszej i drugiej pochodnej funkcji w tym przedziale.
+	Na początku przyjmujemy sobie za $x_1$ granicę $a$ lub $b$ i wyznaczamy równanie stycznej do wykresu funkcji w punkcie $[x_1, f(x_1)]$, następnie wyznaczamy odciętą $x_2$ punktu przecięcia tej stycznej z osią OX - w ten sposób otrzymujemy kolejne przybliżenie naszego rozwiązania.\tabularnewline
+	Całą procedurę powtarzamy do momentu gdy otrzymamy wynik mieszczący się w naszym $\epsilon$ tworząc kolejne styczne.
 \subsubsection*{Rozwiązanie}
 	\begin{algorithm}[H]
 	\caption{Newton method}
@@ -155,6 +167,9 @@
 	        \item \texttt{1} — nie osiągnięto wymaganej dokładności w \texttt{maxit} iteracji
 	    \end{itemize}
 	\end{itemize}
+\subsubsection*{Opis algorytmu}
+	Do użycia tej metody potrzebujemy dwa punkty startowe $x_0$ i $x_1$, których będziemy używać do wyznaczania następnych przybliżeń. Obliczamy $f(x_0)$ i $f(x_1)$, a następnie poprowadzamy przez te dwa punkty sieczną. Przecięcie siecznej z osią OX wyznaczy nam punkt do następnej iteracji. W ten sposób będziemy wyznaczać coraz to bliższe przybliżenia funkcji używając do tego zawsze dwóch wartości $x_n$ oraz $x_{n+1}$.
+	Metoda ta nie zawsze jest zbieżna.
 \subsubsection*{Rozwiązanie}
 	\begin{algorithm}[H]
 	\caption{secant method}
