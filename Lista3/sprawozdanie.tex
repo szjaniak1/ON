@@ -213,9 +213,8 @@
 	    \item metoda siecznych z przybliżeniami początkowymi $x_0 = 1$, $x_1 = 2$
 	\end{itemize}
 \noindent i precyzją $\delta = \frac{1}{2} 10^{-5}$, $\epsilon = \frac{1}{2} 10^{-5}$.
-\subsection*{Rozwiązanie}
+\subsection*{Wyniki}
 \subsubsection*{Metoda bisekcji}
-	\noindent Wyniki:
 		\begin{itemize}
 			\item pierwiastek, $r = 1.9337539672851562$
 		    \item wartość funkcji, $f(r) = -2.7027680138402843 \cdot 10^{-7}$
@@ -223,7 +222,6 @@
 		    \item brak błędu, $\mathrm{err} = 0$
 		\end{itemize}
 \subsubsection*{Metoda Newtona}
-	\noindent Wyniki:
 		\begin{itemize}
 			\item pierwiastek, $r = 1.933753779789742$
 		    \item wartość funkcji, $f(r) = -2.2423316314856834 \cdot 10^{-8}$
@@ -231,7 +229,6 @@
 		    \item brak błędu, $\mathrm{err} = 0$
 		\end{itemize}
 \subsubsection*{Metoda siecznych}
-	\noindent Wyniki:
 		\begin{itemize}
 			\item pierwiastek, $r = 1.933753644474301$
 		    \item wartość funkcji, $f(r) = 1.564525129449379 \cdot 10^{-7}$
@@ -240,4 +237,27 @@
 		\end{itemize}
 \subsubsection*{Wnioski}
 	Wszystkie metody zwróciły nam bardzo podobne rezultaty jeśli chodzi o wartość naszego przybliżonego pierwiastka, który w rzeczywistości wynosi 2. Możemy natomiast zauważyć różnice w ilości przeprowadzonych iteracji. Dla metody Newtona oraz siecznych jest to kolejno 4 i 3 co jest bardzo dobrym wynikiem. Odstaje tutaj metoda bisekcji, która musiała wykonać aż 16 iteracji, gdyż jest metodą globalną i powoli, liniowo zbliża się do pierwiastka. Zaletą jej jednak jest to, że do jej użycia potrzebujemy mniej informacji początkowych.
+
+\section*{Zadanie 5}
+\subsection*{Opis problemu}
+	Należy wyznaczyć punkt, w którym przecinają się funkcje $y = 3x$ oraz $y = e^x$. Dokładność obliczeń wynosi: $\delta = 10^{-4}$, $\epsilon = 10^{-4}$. Należy użyć metody bisekcji.
+\subsection*{Wyniki}
+\subsubsection*{Pierwszy punkt}
+	\begin{itemize}
+		\item pierwiastek, $r = 0.619140625$
+	    \item wartość funkcji, $f(r) = 9.066320343276146 \cdot 10^{-5}$
+	    \item liczba iteracji, $it = 9$
+	    \item brak błędu, $\mathrm{err} = 0$
+	\end{itemize}
+\subsubsection*{Drugi punkt}
+	\begin{itemize}
+		\item pierwiastek, $r = 1.5120849609375$
+	    \item wartość funkcji, $f(r) = 7.618578602741621 \cdot 10^{-5}$
+	    \item liczba iteracji, $it = 13$
+	    \item brak błędu, $\mathrm{err} = 0$
+	\end{itemize}
+\subsection*{Wnioski}
+	Wyniki pokrywają się z rzeczywistością.
+
+\section*{Zadanie 6}
 \end{document}
