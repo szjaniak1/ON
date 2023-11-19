@@ -28,7 +28,7 @@
 	Czwórka wartości \texttt{(r, val, it, err)}.
 	\begin{itemize}
 	    \item \texttt{r} — przybliżenie pierwiastka równania $f(x) = 0$
-	    \item \texttt{v} — wartość funkcji w $r$
+	    \item \texttt{val} — wartość funkcji w $r$
 	    \item \texttt{it} — liczba wykonanych iteracji
 	    \item \texttt{err} — sygnalizacja błędu, możliwe wartości:
 	    \begin{itemize}
@@ -59,12 +59,12 @@
         	\State return $r, val, it, err$
         \EndIf
 
-        \While{$abs(e) > \epsilon$ and $abs(f(r)) > \delta$}
+        \While{$|e| > \epsilon$ and $|f(r)| > \delta$}
         	\State $e \gets frac{e}{2}$
         	\State $r \gets a + e$
         	\State $val \gets f(r)$
         	\State $it \gets it + 1$
-        	\If{ $abs(e) < \delta$ or $abs(val) < \epsilon$ }
+        	\If{ $|e| < \delta$ or $|val| < \epsilon$ }
         		\State return $r, val, it, err$
         	\EndIf
 
@@ -93,10 +93,10 @@
 	    \item \texttt{maxit} — liczba całkowita określająca dopuszczalną liczbę iteracji
 	\end{itemize}
 \subsubsection*{Dane wyjściowe}
-	Czwórka wartości \texttt{(r, v, it, err)}.
+	Czwórka wartości \texttt{(r, val, it, err)}.
 	\begin{itemize}
 	    \item \texttt{r} — przybliżenie pierwiastka równania $f(x) = 0$
-	    \item \texttt{v} — wartość funkcji w $r$
+	    \item \texttt{val} — wartość funkcji w $r$
 	    \item \texttt{it} — liczba wykonanych iteracji
 	    \item \texttt{err} — sygnalizacja błędu, możliwe wartości:
 	    \begin{itemize}
@@ -114,7 +114,7 @@
 	\caption{Newton method}
 	\begin{algorithmic}
 		\State $val \gets f(x_0)$
-        \State $val_prime \gets 0$
+        \State $val\_prime \gets 0$
         \State $x_1 \gets 0$
         \State $it \gets 1$
         \If{ $abs(v) < \epsilon$}
@@ -123,16 +123,16 @@
         \EndIf
 
         \For{ $it$ to $maxit$ }
-        	\State $val_prime \gets pf(x_0)$
-        	\State $x_1 = x_0 - frac{val}{val_prime}$
+        	\State $val\_prime \gets pf(x_0)$
+        	\State $x_1 = x_0 - \frac{val}{val\_prime}$
         	\State $val \gets f(x_1)$
 
-        	\If{ $abs(val_prime) \le NEAR ZERO$ or $isInf(abs(val_prime))$}
+        	\If{ $|val\_prime| \le NEAR\_ZERO$ or $IsInf(|val\_prime|)$}
         		\State $err \gets 2$
         		\State return $x_0, f(x_0), it, err$
         	\EndIf
 
-        	\If{ $abs(x_1 - x_0) < \delta$ or $abs(val) < \epsilon$}
+        	\If{ $|x_1 - x_0| < \delta$ or $|val| < \epsilon$}
         		\State return return $x_1, val, it, err$
         	\EndIf
 
@@ -178,22 +178,22 @@
 		\State $a \gets x_0$
 		\State $b \gets x_1$
 		\State $val \gets f(x_0)$
-		\State $val next \gets f(x_1)$
+		\State $val\_next \gets f(x_1)$
 
 		\For{ $it$ to $maxit$}
-			\If{ $abs(val) > abs(val next)$}
+			\If{ $|val| > |val\_next|$}
 				\State $a, b = b, a$
-				\State $val, val next = val next, val$
+				\State $val, val\_next \gets val\_next, val$
 			\EndIf
 
-			\State $d \gets \frac{b - a}{val next - val}$
+			\State $d \gets \frac{b - a}{val\_next - val}$
 			\State $b \gets a$
-			\State $val next \gets val$
+			\State $val\_next \gets val$
 
 			\State $a \gets a - d * val$
 			\State $val \gets f(a)$
 
-			\If{ $abs(val) < \epsilon$ or $abs(b - a) < delta$}
+			\If{ $|val| < \epsilon$ or $|b - a| < delta$}
 				\State return $a, val, it ,err$
 			\EndIf
 		\EndFor
