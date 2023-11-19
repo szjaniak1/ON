@@ -28,25 +28,27 @@ function newton_method(f::Function, pf::Function, x0::Float64, delta::Float64, e
 		return x0, val, it, err
 	end
 
+	xn::Float64 = x0
+	xn1::Float64 = x0
 	for it in 1:maxit
-		val_prime = pf(x0)
-		x1 = x0 - (val / val_prime)
-		val = f(x1)
+		val_prime = pf(xn)
+		xn1 = xn - (val / val_prime)
+		val = f(xn1)
 
 		if abs(val_prime) <= NEAR_ZERO || isinf(abs(val_prime))
 			err = 2
-			return x0, f(x0), it, err
+			return xn, f(xn), it, err
 		end
 
-		if abs(x1 - x0) < delta || abs(val) < epsilon
-			return x1, val, it, err
+		if abs(xn1 - xn) < delta || abs(val) < epsilon
+			return xn1, val, it, err
 		end
 
-		x0 = x1
+		xn = xn1
 	end
 
 	err = 1
-	return x0, val, it, err
+	return xn1, val, it, err
 end
 
 function bisection_method(f::Function, a::Float64, b::Float64, delta::Float64, epsilon::Float64)
