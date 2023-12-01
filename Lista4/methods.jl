@@ -4,11 +4,11 @@ Obliczenia Naukowe
 Lista 4, zadanie 1, 2, 3, 4
 =#
 
-# using Plots
-
 module methods
-
+using Plots
 export difference_quotients
+export natural
+export draw_Nnfx
 
 function difference_quotients(x::Vector{Float64}, f::Vector{Float64})::Vector{Float64}
 	fx::Vector{Float64} = []
@@ -30,14 +30,31 @@ end
 function newton_value(x::Vector{Float64}, fx::Vector{Float64}, t::Float64)
 	n = length(x)
 
+    w = (z,k) -> (k == n ?
+              fx[n]
+            : fx[k] + (z - x[k]) * w(z,k+1))
+
+    return w(t, 1)
 end
 
 function natural(x::Vector{Float64}, fx::Vector{Float64})
 
 end
 
-function draw_Nnfx(f::Function, a::Float64, b::Float64, n::UInt8)
+function draw_Nnfx(f::Function, a::Float64, b::Float64, n::UInt8, plot_name::String)
+	h::Float64 = (b - a) / n
+	res = h / 10
+	x = vec([i for i in a:h:b])
 
+	fx = difference_quotients(x, vec([f(i) for i in x]))
+	XA = a:res:b
+
+	YA_f = [f(Float64(i)) for i in XA]
+	YA_N = [newton_value(x, fx, i) for i in x]
+
+	plot(XA, YA_N)
+    plot(XA, YA_f)
+    savefig("graphs/" * plot_name * ".png")
 end
 
 end 
