@@ -9,6 +9,8 @@
 \usepackage{graphicx}
 \usepackage{subcaption}
 
+\def\v{0.47}
+
 \title{%
 	Obliczenia naukowe \\
 	\large Lista 4}
@@ -59,15 +61,80 @@
 	\end{itemize}
 \subsection*{Opis użytego algorytmu}
 
-\section*{Zadanie 4}
-\subsection*{Opis problemu}
-	Napisać funkcję, która zinterpoluje zadaną funkcję $f$ w przedziale $[a;b]$ za pomocą wielomianu interpolacyjnego stopnia $n$ postaci Newtona. Następnie narysuje wielomian interpolacyjny i interpolowaną funkcję. Należy użyć węzłów równoodległych czyli $x_k = a + kh$ dla $h = \frac{b-a}{n}, \enspace k = 0,1,\dots,n$.
-\subsection*{Dane wejściowe}
-	\begin{itemize}
-	    \item \texttt{f} — funkcja $f$ zadana jako anonimowa funkcja
-	    \item \texttt{a, b} — przedział interpolacji
-	    \item \texttt{n} — stopień wielomianu interpolacyjnego
-	    \item \texttt{plot\_name} - nazwa wykresu zinterpolowanej funkcji
-	\end{itemize}
+\section*{Zadanie 5}
+	Przetestować metodę \texttt{draw\_Nnfx} na kilku zadanych poniżej funkcjach.
+\subsection*{Wyniki}
+	\begin{figure}[H]
+	    \centering
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad5.a.5.png}
+			\caption{$n = 5$}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad5.a.10.png}
+			\caption{$n = 10$}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad5.a.15.png}
+			\caption{$n = 15$}
+		\end{subfigure}
+	\\{$f(x) = e^x$ w przedziale $[0;1]$ dla $n = 5,10,15$}
+	\end{figure}
+
+	\begin{figure}[H]
+	    \centering
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad5.b.5.png}
+			\caption{$n = 5$}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad5.b.10.png}
+			\caption{$n = 10$}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad5.b.15.png}
+			\caption{$n = 15$}
+		\end{subfigure}
+	\\{$f(x) = x^2 \cdot sin x$ w przedziale $[-1;1]$ dla $n = 5,10,15$}
+	\end{figure}
+\subsection*{Wnioski}
+
+\section*{Zadanie 6}
+	Przetestować metodę \texttt{draw\_Nnfx} na kilku zadanych poniżej funkcjach.
+\subsection*{Wyniki}
+	\begin{figure}[H]
+	    \centering
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad6.a.5.png}
+			\caption{$n = 5$}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad6.a.10.png}
+			\caption{$n = 10$}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad6.a.15.png}
+			\caption{$n = 15$}
+		\end{subfigure}
+	\\{$f(x) = |x|$ w przedziale $[-1;1]$ dla $n = 5,10,15$}
+	\end{figure}
+
+	\begin{figure}[H]
+	    \centering
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad6.b.5.png}
+			\caption{$n = 5$}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad6.b.10.png}
+			\caption{$n = 10$}
+		\end{subfigure}
+		\begin{subfigure}[b]{\v\linewidth}
+			\includegraphics[width=\linewidth]{graphs/zad6.b.15.png}
+			\caption{$n = 15$}
+		\end{subfigure}
+	\\{$f(x) = \frac{1}{1+x^2}$ w przedziale $[-5;5]$ dla $n = 5,10,15$}
+	\end{figure}
+\subsection*{Wnioski}
 
 \end{document}

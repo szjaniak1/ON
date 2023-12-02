@@ -7,6 +7,7 @@ Lista 4, zadanie 1, 2, 3, 4
 module methods
 
 export difference_quotients
+export newton_value
 export natural
 export draw_Nnfx
 
