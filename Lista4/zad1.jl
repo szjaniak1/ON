@@ -12,4 +12,5 @@ f = Vector{Float64}([1, -3, 2, 4])
 
 fx = difference_quotients(x, f)
 
+fx = natural(x, f)
 println(fx)

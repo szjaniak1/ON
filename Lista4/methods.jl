@@ -40,8 +40,17 @@ function newton_value(x::Vector{Float64}, fx::Vector{Float64}, t::Float64)::Floa
 	return n_value
 end
 
-function natural(x::Vector{Float64}, fx::Vector{Float64})
+function natural(x::Vector{Float64}, fx::Vector{Float64})::Vector{Float64}
+	len::UInt16 = length(x)
 
+  f_copy::Vector{Float64} = copy(fx)
+  for i in (len - 1):-1:1
+      f_copy[i] = fx[i] - f_copy[i + 1] * x[i]
+      for j = (i + 1):(len - 1)
+          f_copy[j] = f_copy[j] - f_copy[j + 1] * x[i]
+      end
+  end
+  return f_copy
 end
 
 function draw_Nnfx(f::Function, a::Float64, b::Float64, n::UInt8, plot_name::String)
@@ -50,13 +59,12 @@ function draw_Nnfx(f::Function, a::Float64, b::Float64, n::UInt8, plot_name::Str
 	x::Vector{Float64} = vec([i for i in a:h:b])
 
 	fx::Vector{Float64} = difference_quotients(x, vec([f(i) for i in x]))
-	XA::Vector{Float64} = a:res:b
+	x_values::Vector{Float64} = a:res:b
 
-	YA_f::Vector{Float64} = [f(Float64(i)) for i in XA]
-	YA_N::Vector{Float64} = [newton_value(x, fx, i) for i in x]
+	y_values_function::Vector{Float64} = [f(Float64(i)) for i in x_values]
+	y_values_newton::Vector{Float64} = [newton_value(x, fx, i) for i in x_values]
 
-	plot(XA, YA_N)
-  plot(XA, YA_f)
+	plot(x_values, [y_values_function, y_values_newton], label=["real_values" "interpolated_values"], linewidth=3)
   savefig("graphs/" * plot_name * ".png")
 end
 
