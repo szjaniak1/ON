@@ -35,7 +35,7 @@ function newton_value(x::Vector{Float64}, fx::Vector{Float64}, t::Float64)::Floa
 
 	n_value::Float64 = fx[len]
 	for k in (len - 1):-1:1
-	    n_value = n_value * (t - x[k]) + fx[k]
+	  n_value = n_value * (t - x[k]) + fx[k]
 	end
 
 	return n_value
@@ -48,7 +48,7 @@ function natural(x::Vector{Float64}, fx::Vector{Float64})::Vector{Float64}
   for i in (len - 1):-1:1
       f_copy[i] = fx[i] - f_copy[i + 1] * x[i]
       for j = (i + 1):(len - 1)
-          f_copy[j] = f_copy[j] - f_copy[j + 1] * x[i]
+        f_copy[j] = f_copy[j] - f_copy[j + 1] * x[i]
       end
   end
   return f_copy

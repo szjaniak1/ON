@@ -8,6 +8,7 @@
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{amsmath}
 
 \def\v{0.47}
 
@@ -30,6 +31,28 @@
 	\begin{itemize}
 	    \item \texttt{fx} — wektor długości $n+1$ zawierający obliczone ilorazy różnicowe
 	\end{itemize}
+\subsection*{Rozwiązanie}
+	\begin{algorithm}
+	\caption{Obliczanie ilorazów różnicowych}
+	\begin{algorithmic}[1]
+	    \Function{DifferenceQuotients}{$x, f$}
+	        \State $fx \gets []$
+	        \State $f\_copy \gets \text{copy}(f)$
+	        \State $\text{len} \gets \text{length}(x)$
+	        
+	        \For{$i \gets 1$ \textbf{to} $\text{len}$}
+	            \For{$k \gets (i - 1)$ \textbf{downto} $1$}
+	                \State $a \gets f\_copy[k + 1] - f\_copy[k]$
+	                \State $b \gets (x[i] - x[k])$
+	                \State $f\_copy[k] \gets \frac{a}{b}$
+	            \EndFor
+	            \State $\text{push!}(fx, f\_copy[1])$
+	        \EndFor
+	        
+	        \State \textbf{return} $fx$
+	    \EndFunction
+	\end{algorithmic}
+	\end{algorithm}
 \subsection*{Opis użytego algorytmu}
 
 \section*{Zadanie 2}
@@ -45,6 +68,22 @@
 	\begin{itemize}
 	    \item \texttt{nt} — wartość wielomianu w punkcie \texttt{t}
 	\end{itemize}
+\subsection*{Rozwiązanie}
+	\begin{algorithm}
+	\caption{Wartość wielomianu Newtona}
+	\begin{algorithmic}[1]
+	    \Function{NewtonValue}{$x, fx, t$}
+	        \State $\text{len} \gets \text{length}(x)$
+	        \State $n\_value \gets fx[\text{len}]$
+	        
+	        \For{$k \gets (\text{len} - 1)$ \textbf{downto} $1$}
+	            \State $n\_value \gets n\_value \cdot (t - x[k]) + fx[k]$
+	        \EndFor
+	        
+	        \State \textbf{return} $n\_value$
+	    \EndFunction
+	\end{algorithmic}
+	\end{algorithm}
 \subsection*{Opis użytego algorytmu}
 
 \section*{Zadanie 3}
@@ -59,6 +98,26 @@
 	\begin{itemize}
 	    \item \texttt{a} — wektor długości $n+1$ zawierający obliczone współczynniki postaci naturalnej ($a_n x^n + a_{n-1} x^{n-1} + \cdots a_1 x + a_0$)
 	\end{itemize}
+\subsection*{Rozwiązanie}
+	\begin{algorithm}
+	\caption{Obliczanie współczynników naturalnego kształtu wielomianu}
+	\begin{algorithmic}[1]
+	    \Function{Natural}{$x, fx$}
+	        \State $\text{len} \gets \text{length}(x)$
+	        \State $f\_copy \gets \text{copy}(fx)$
+	        
+	        \For{$i \gets (\text{len} - 1)$ \textbf{downto} $1$}
+	            \State $f\_copy[i] \gets fx[i] - f\_copy[i + 1] \cdot x[i]$
+	            
+	            \For{$j \gets (i + 1)$ \textbf{to} $(\text{len} - 1)$}
+	                \State $f\_copy[j] \gets f\_copy[j] - f\_copy[j + 1] \cdot x[i]$
+	            \EndFor
+	        \EndFor
+	        
+	        \State \textbf{return} $f\_copy$
+	    \EndFunction
+	\end{algorithmic}
+	\end{algorithm}
 \subsection*{Opis użytego algorytmu}
 
 \section*{Zadanie 5}
