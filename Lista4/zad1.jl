@@ -4,7 +4,6 @@ Obliczenia Naukowe
 Lista 4, zadanie 1
 =#
 
-
 include("./methods.jl")
 using .methods
 
