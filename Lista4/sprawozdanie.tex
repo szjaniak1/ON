@@ -24,12 +24,12 @@
 	Napisać funkcję obliczającą ilorazy różnicowe dla podanych węzłów oraz wartości danej funkcji w tych węzłach.
 \subsection*{Dane wejściowe}\label{1.in-data}
 	\begin{itemize}
-		\item \texttt{x} — wektor długości $n+1$ zawierający węzły $x_0,\dots,x_n$
-		\item \texttt{f} — wektor długości $n+1$ zawierający wartości interpolowanej funkcji w węzłach $f(x_0), \dots, f(x_n)$
+		\item \texttt{x} — wektor długości $n + 1$ zawierający węzły $x_0 ,\dots ,x_n$
+		\item \texttt{f} — wektor długości $n + 1$ zawierający wartości interpolowanej funkcji w węzłach $f(x_0), \dots, f(x_n)$
 	\end{itemize}
 \subsection*{Dane wyjściowe}
 	\begin{itemize}
-	    \item \texttt{fx} — wektor długości $n+1$ zawierający obliczone ilorazy różnicowe
+	    \item \texttt{fx} — wektor długości $n + 1$ zawierający obliczone ilorazy różnicowe
 	\end{itemize}
 \subsection*{Rozwiązanie}
 	\begin{algorithm}
@@ -54,6 +54,11 @@
 	\end{algorithmic}
 	\end{algorithm}
 \subsection*{Opis użytego algorytmu}
+	Do działania naszego algorytmu tworzymy kopię wartości $fx$, w której będziemy obliczać kolejne iteracje naszego algorytmu. Dla oszczędności wykorzystywanej pamięci będziemy zapamiętywać jedynie ostatnio obliczone wartości, gdyż tylko takie będą nam potrzebne. Zewnętrzna pętla iteruje po kolejnych węzłach $x_i$, natomiat wewnętrzna oblicza ilorazy różnicowe dla danej iteracji według wzoru:\\
+\centerline{$f[x_0, x_1, \ldots, x_k] = \frac{f[x_1, x_2, \ldots, x_k] - f[x_0, x_1, \ldots, x_{k-1}]}{x_k - x_0}$}
+	Po zakończeniu obliczeń dla danego $i$ do naszej tablicy wyników dodajemy jedynie pierwszy iloraz różnicowy. Algorytm ten bazuje na obliczaniu ilorazów różnicowych dla coraz to mniejszych zbiorów węzłów.
+
+\clearpage
 
 \section*{Zadanie 2}
 \subsection*{Opis problemu}
@@ -85,6 +90,11 @@
 	\end{algorithmic}
 	\end{algorithm}
 \subsection*{Opis użytego algorytmu}
+	Algorytm bazuje na uogólnionym sposobie Hornera w czasie liniowym. Początkowo ustawiamy naszą wartość na wartość współczynnika o najwyższym stopniu, czyli $f[len]$, gdzie $len$ to liczba węzłów. W każdej iteracji pętli aktualizowana jest wartość według uogólnionego wzoru Hornera:
+\centerline{$n(x) = f[x_1] + (x - x_1) \left[f[x_2] + (x - x_2) \left[f[x_3] + \ldots + (x - x_{n-1}) \left[f[x_n]\right]\ldots\right]\right]$}
+	Po zakończeniu pętli algorytm zwraca obliczoną wartość, która reprezentuje wartość wielomianu Newtona w punkcie $t$.
+
+\clearpage
 
 \section*{Zadanie 3}
 \subsection*{Opis problemu}
@@ -119,6 +129,8 @@
 	\end{algorithmic}
 	\end{algorithm}
 \subsection*{Opis użytego algorytmu}
+
+\clearpage
 
 \section*{Zadanie 5}
 	Przetestować metodę \texttt{draw\_Nnfx} na kilku zadanych poniżej funkcjach.
@@ -157,6 +169,7 @@
 	\\{$f(x) = x^2 \cdot sin x$ w przedziale $[-1;1]$ dla $n = 5,10,15$}
 	\end{figure}
 \subsection*{Wnioski}
+	Na wykresach możemy zauważyć, że wykres interpolowanej przez nas funkcji pokrywa się praktycznie idealnie z rzeczywistymi wartościami dla stopni $n = 5, 10, 15$
 
 \section*{Zadanie 6}
 	Przetestować metodę \texttt{draw\_Nnfx} na kilku zadanych poniżej funkcjach.
@@ -194,6 +207,9 @@
 		\end{subfigure}
 	\\{$f(x) = \frac{1}{1+x^2}$ w przedziale $[-5;5]$ dla $n = 5,10,15$}
 	\end{figure}
+
+\clearpage
 \subsection*{Wnioski}
+	Widzimy, że w tym przypadku funkcje nie interpolują się za dobrze. Nie widać również poprawy przy zwiększaniu stopnia $n$ co daje różne rezultaty. Pokazuje to dobrze ograniczenia interpolacji wielomianowej. Lepsze efekty mogłaby przynieść interpolacja wielomianu poprzez podzielenie go na mniejsze przedziały i lepsze dobranie wartości węzłów interpolacji.
 
 \end{document}
