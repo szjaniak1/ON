@@ -2,6 +2,7 @@ include("./matrixgen.jl")
 using .matrixgen
 
 using SparseArrays
+using DelimitedFiles
 
 function read_A_file(file_path::String)
 	file = open(file_path, "r")
@@ -26,7 +27,7 @@ end
 function read_B_file(file_path::String)
 	file = open(file_path, "r")
 
-	result = []
+	result::Vector{Float64} = []
 	size = parse(Int64, readline(file))
 
 	while !eof(file)
@@ -38,6 +39,10 @@ function read_B_file(file_path::String)
 	return result, size
 end
 
+function write_X_file(file_path::String, results::Vector{Float64})
+	writedlm(file_path, results)
+end
+
 res_b, siz_b = read_B_file("../data/Dane16_1_1/b.txt")
 # res, siz, blck_siz = read_A_file("./A.txt")
 # println(res.nzval)
@@ -45,3 +50,5 @@ res_b, siz_b = read_B_file("../data/Dane16_1_1/b.txt")
 # println(blck_siz)
 println(res_b)
 println(siz_b)
+
+write_X_file("./x.txt", res_b)
