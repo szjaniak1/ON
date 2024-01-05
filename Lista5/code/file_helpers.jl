@@ -12,9 +12,9 @@ function read_A_file(file_path::String)
 	file = open(file_path, "r")
 
 	size, block_size = parse.(Int64, split(readline(file), ' '))
-	rows = []
-	columns = []
-	values = []
+	rows::Vector{Int64} = []
+	columns::Vector{Int64} = []
+	values::Vector{Float64} = []
 
 	while !eof(file)
 		i, j, val = split(readline(file), ' ')
