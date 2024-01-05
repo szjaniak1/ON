@@ -18,5 +18,44 @@
 \maketitle
 
 \section*{Opis problemu}
+	Głównym problemem jest rozwiązanie równania liniowego\\
+	\centerline{$Ax = b$},
+	gdzie macierz A jest rzadką, tj. mającą dużą elementów zerowych, i blokową o następującej strukturze:\\
+	\[
+	A = \begin{bmatrix}
+	A_1 & C_1 & 0 & 0 & \dots & 0 \\
+	B_2 & A_2 & C_2 & 0 & \dots & 0 \\
+	0 & B_3 & A_3 & C_3 & \dots & 0 \\
+	\vdots & \vdots & \vdots & \ddots & \vdots \\
+	0 & \dots & 0 & B_{v-2} & A_{v-2} & C_{v-2} \\
+	0 & \dots & 0 & 0 & B_{v-1} & A_{v-1} \\
+	0 & \dots & 0 & 0 & 0 & B_v A_v \\
+	\end{bmatrix}
+	\]
+	i wektora prawych stron $\mathbf{b} \in \mathbb{R}^{n \times n}$, gdzie $n \geq 4$.\\
+	\\
+	Niech $v = \frac{n}{\ell}$, zakładając, że $n$ jest podzielne przez $\ell$, gdzie $\ell$ jest rozmiarem wszystkich kwadratowych macierzy wewnętrznych (bloków): $A_k$, $B_k$ i $C_k$. Mianowicie, $A_k \in \mathbb{R}^{\ell \times \ell}$, dla $k = 1, \ldots, v$ jest macierzą gęstą, $0$ jest kwadratową macierzą zerową stopnia $\ell$, a macierz $B_k \in \mathbb{R}^{\ell \times \ell}$, dla $k = 2, \ldots, v$ ma następującą postać:\\
+	\[
+	B_k = \begin{bmatrix}
+	    0 & \dots & 0 & b_{k1} \\
+	    0 & \dots & 0 & b_{k2} \\
+	    \vdots & \vdots & \vdots & \vdots \\
+	    0 & \dots & 0 & b_{k\ell}
+	\end{bmatrix}
+	\]\\
+
+	Macierz $B_k$ ma tylko jedną, ostatnią, kolumnę niezerową. Natomiast $C_k \in \mathbb{R}^{\ell \times \ell}$, dla $k = 1, \ldots, v - 1$, jest macierzą diagonalną:\\
+	\[
+	C_k = \begin{bmatrix}
+	    c_{k1} & 0 & 0 & \dots & 0 \\
+	    0 & c_{k2} & 0 & \dots & 0 \\
+	    \vdots & \vdots & \vdots & \ddots & \vdots \\
+	    0 & \dots & 0 & c_{k(\ell-1)} & 0 \\
+	    0 & \dots & 0 & 0 & c_{k\ell}
+	\end{bmatrix}
+	\]
+	Dodatkowym wymaganiem związanym z problemem jest zadbanie o złożoność czasową i pamięciową rozwiązania ze względu na potrzebe obliczania macierzy o dużej wielkośći. Należy zapamietywać jedynie elementy niezerowe, gdyż nasz program będzie pracował z macierzami rzadkimi oraz optymalizacjia standardowych algorytmów w celu usprawnienia obliczeń.
+
+
 
 \end{document}
