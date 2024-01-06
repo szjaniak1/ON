@@ -2,7 +2,10 @@ module blocksys
 
 using SparseArrays
 
-export calculate_right_side, LU
+export calculate_right_side
+export gauss, gauss_LU, gauss_with_pivots, gauss_with_pivots_LU
+export solve_LU, solve_LU_with_pivots, solve_gauss, solve_gauss_with_pivots
+
 export SMatrix
 
 SMatrix = SparseMatrixCSC{Float64, Int64}
@@ -148,12 +151,12 @@ function gauss_with_pivots_LU!(U!::SMatrix, L!::SMatrix, size::Int64, block_size
     return pivots
 end
 
-function LU(U::SMatrix, L::SMatrix, b::Vector{Float64}, size::Int64, block_size::Int64)
+function solve_LU(U::SMatrix, L::SMatrix, b::Vector{Float64}, size::Int64, block_size::Int64)
 	forward_substitution(L, b, size, block_size)
 	return backward_substitution(U, b, size, block_size)
 end
 
-function LU_with_pivot()
+function solve_LU_with_pivots()
 	forward_substitution_with_pivots(L, b, size, block_size)
 	return backward_substitution_with_pivots(U, b, size, block_size)
 end
