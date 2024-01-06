@@ -11,6 +11,7 @@ using .blocksys
 
 using SparseArrays
 using Plots
+using Plots.PlotMeasures
 using Formatting
 
 function generate_data(start_size::Int64, end_size::Int64, block_size::Int64, step::Int64, condition::Float64)
@@ -18,10 +19,6 @@ function generate_data(start_size::Int64, end_size::Int64, block_size::Int64, st
 		file_path = "../data/WygenerowaneDane/A" * string(size) * "_" * string(block_size) * "_" * string(condition) * ".txt"
 		blockmat(size, block_size, condition, file_path)
 	end
-end
-
-function plot()
-	#TODO
 end
 
 function gauss_with_pivots_LU_test(M, L, b, size, block_size)
@@ -40,7 +37,7 @@ function gauss_LU_test(M, L, b, size, block_size)
 end
 
 function gauss_test(M, L, b, size, block_size)
-    p = gauss(M, size, block_size)
+    p = gauss(M, b, size, block_size)
     solve_gauss(M, b, size, block_size)
 end
 
@@ -60,16 +57,16 @@ function single_time_memory_test(file_path::String, iterations::Int, test_functi
 	end
 	mean_time = total_time / iterations
 	mean_memory = total_memory / iterations
-	println("size; ", replace(string(mean_time), "." => ","), "; ", replace(string(format(mean_memory)), "." => ","))
+	println(" size; ", replace(string(mean_time), "." => ","), "; ", replace(string(format(mean_memory)), "." => ","))
 
 	return mean_time, mean_memory, size
 end
 
 function test(iterations::Int64, test_function::Function)
 	file_paths = readdir("../data/WygenerowaneDane/", join=true)
-	times = []
-	memory = []
-	sizes = []
+	times::Vector{Float64} = []
+	memory::Vector{Int64} = []
+	sizes::Vector{Int64} = []
 
 	for path in file_paths
 		time, mem, size = single_time_memory_test(path, iterations, test_function)
@@ -81,12 +78,22 @@ function test(iterations::Int64, test_function::Function)
 	return times, memory, sizes
 end
 
-generate_data(1000, 40000, 4, 1000, 10.0)
+start_c::Int64 = 10000
+end_c::Int64 = 14000
+step::Int64 = 2000
+generate_data(start_c, end_c, 4, step, 10.0)
 
 iterations = 10
-times, memory, sizes = test(iterations, gauss_LU_test)
-print(times)
+times1, memory1, = test(iterations, gauss_LU_test)
+times2, memory2, = test(iterations, gauss_test)
+# times3, memory3, = test(iterations, gauss_LU_test)
+# times4, memory4, = test(iterations, gauss_LU_test)
+siz = range(start_c, end_c, length = 3)
+plot!(siz, [times1, times2], marker=(:circle,5), label=["gauss_LU, gauss"], left_margin = 50mm)
+title!("gauss_times_comparison")
+savefig("../graphs/gauss_times_comparison.png")  
 
 # wypisywanie do pliku na z prawa strona
-# funkcja robiaca wykresy
+# wykresy
+# tester
 # dokumentacja
