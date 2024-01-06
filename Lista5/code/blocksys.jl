@@ -1,3 +1,9 @@
+#=
+Szymon Janiak 268514
+Obliczenia Naukowe
+Lista 5, modul bloksys
+=#
+
 module blocksys
 
 using SparseArrays

@@ -1,3 +1,9 @@
+#=
+Szymon Janiak 268514
+Obliczenia Naukowe
+Lista 5, modul do obslugi plikow
+=#
+
 include("./matrixgen.jl")
 using .matrixgen
 

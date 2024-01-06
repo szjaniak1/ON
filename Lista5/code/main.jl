@@ -1,3 +1,9 @@
+#=
+Szymon Janiak 268514
+Obliczenia Naukowe
+Lista 5
+=#
+
 include("./file_helpers.jl")
 include("./blocksys.jl")
 using .file_helpers
@@ -17,15 +23,19 @@ function plot()
 	#TODO
 end
 
+function single_test()
+
+end
+
 function test()
-	#TODO
+	
 end
 
 # vec_b, siz_b = read_B_file("../data/Dane500000_1_1/b.txt")
 # matrix, size, block_size = read_A_file("../data/Dane500000_1_1/A.txt")
 # L = SparseArrays.spzeros(size, size)
 # print(L.nzval)
-generate_data(100, 116, 4, 4, 10.0)
+generate_data(4000, 400000, 4, 4000, 10.0)
 # solution = LU(matrix, L, vec_b, size, block_size)
 # write_X_file("./x.txt", solution)
 
