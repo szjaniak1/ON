@@ -54,11 +54,15 @@
 	    0 & \dots & 0 & 0 & c_{k\ell}
 	\end{bmatrix}
 	\]
-	Dodatkowym wymaganiem związanym z problemem jest zadbanie o złożoność czasową i pamięciową rozwiązania ze względu na potrzebe obliczania macierzy o dużej wielkośći. Należy zapamietywać jedynie elementy niezerowe, gdyż nasz program będzie pracował z macierzami rzadkimi oraz optymalizacji standardowych algorytmów w celu usprawnienia obliczeń.
+	Dodatkowym wymaganiem związanym z problemem jest zadbanie o złożoność czasową i pamięciową rozwiązania ze względu na potrzebe obliczania macierzy o dużej wielkośći. Należy zapamietywać jedynie elementy niezerowe, gdyż nasz program będzie  pracował z macierzami rzadkimi oraz optymalizacji standardowych algorytmów w celu usprawnienia obliczeń.
 
 \section*{Rozwiązanie}
-\subsubsection*{Problem złożoności pamięciowej}
+\subsection*{Problem złożoności pamięciowej}
 	Rozwiązanie korzysta z pakietu SparseArrays z biblioteki standardowej. Wykorzystana struktura danych o nazwie SparseMatrixSCS przechowuje jedynie niezerowe wartości macierzy co pozwala zaoszczędzić sporo pamięci w porównaniu ze zwykłej tablicy dwuwymiarowej która zajmowałaby aż $O(n^2)$ miejsca. W analizie naszego rozwiązania i wyników będziemy zakładać, że odczyt z tej struktury odbywa się w czasie stałym.
+
+\subsection*{Użyte algorytmy i ich optymalizacje}
+\subsubsection*{Eliminacja Gaussa}
+
 
 
 
