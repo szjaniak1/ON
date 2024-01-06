@@ -78,22 +78,35 @@ function test(iterations::Int64, test_function::Function)
 	return times, memory, sizes
 end
 
-start_c::Int64 = 10000
-end_c::Int64 = 14000
-step::Int64 = 2000
-generate_data(start_c, end_c, 4, step, 10.0)
+# start_c::Int64 = 10000
+# end_c::Int64 = 40000
+# step::Int64 = 1000
+# generate_data(start_c, end_c, 4, step, 10.0)
 
-iterations = 10
-times1, memory1, = test(iterations, gauss_LU_test)
-times2, memory2, = test(iterations, gauss_test)
-# times3, memory3, = test(iterations, gauss_LU_test)
-# times4, memory4, = test(iterations, gauss_LU_test)
-siz = range(start_c, end_c, length = 3)
-plot!(siz, [times1, times2], marker=(:circle,5), label=["gauss_LU, gauss"], left_margin = 50mm)
-title!("gauss_times_comparison")
-savefig("../graphs/gauss_times_comparison.png")  
+# iterations = 30
+# times1, memory1, = test(iterations, gauss_LU_test)
+# times2, memory2, = test(iterations, gauss_test)
+# times3, memory3, = test(iterations, gauss_with_pivots_test)
+# times4, memory4, = test(iterations, gauss_with_pivots_LU_test)
+# siz = range(start_c, end_c, length = 31)
+# plot!(siz, [times1, times2, times3, times4], marker=(:circle,5), label=["LU", "gauss", "gauss_with_pivots", "LU_with_pivots"], left_margin = 10mm)
+# title!("times_comparison")
+# savefig("../graphs/times_comparison.png")
+
+# plot!(siz, [memory1, memory2, memory3, memory4], marker=(:circle,5), label=["LU", "gauss", "gauss_with_pivots", "LU_with_pivots"], left_margin = 10mm)
+# title!("memory_comparison")
+# savefig("../graphs/memory_comparison.png")
+
+file_path = "../data/Dane16/A.txt"
+M, size, block_size = read_A_file(file_path)
+b = calculate_right_side(M, size, block_size)
+L = SparseArrays.spzeros(size, size)
+p = gauss_LU!(M, L, size, block_size)
+solution = solve_LU(M, L, b, size, block_size)
+println(solution)
 
 # wypisywanie do pliku na z prawa strona
+# blocksys do poprawy
 # wykresy
 # tester
 # dokumentacja

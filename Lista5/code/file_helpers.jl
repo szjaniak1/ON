@@ -9,7 +9,7 @@ using .matrixgen
 
 module file_helpers
 
-export read_A_file, read_B_file, write_X_file
+export read_A_file, read_B_file, write_X_file, write_X_file_with_abs
 
 using SparseArrays
 using DelimitedFiles
@@ -51,6 +51,10 @@ end
 
 function write_X_file(file_path::String, results::Vector{Float64})
 	writedlm(file_path, results)
+end
+
+function write_X_file_with_abs(file_path::String, results::Vector{Float64}, real_results::Vector{Float64})
+
 end
 
 end
