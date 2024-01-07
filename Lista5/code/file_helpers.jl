@@ -15,6 +15,14 @@ using SparseArrays
 using DelimitedFiles
 using LinearAlgebra
 
+"""
+reads "A" file with given nodes of the matrix
+
+Parameters:
+@file_path - path of the "A" file to be read
+
+no return
+"""
 function read_A_file(file_path::String)
 	file = open(file_path, "r")
 
@@ -35,6 +43,14 @@ function read_A_file(file_path::String)
 	return matrix, size, block_size
 end
 
+"""
+reads "b" file with vector
+
+Parameters:
+@file_path - path of the "b" file to be read
+
+no return
+"""
 function read_B_file(file_path::String)
 	file = open(file_path, "r")
 
@@ -50,10 +66,30 @@ function read_B_file(file_path::String)
 	return result, size
 end
 
+"""
+writes vector of results to an "x" file
+
+Parameters:
+@file_path - path of the "x" file to be written
+@results - vector of Float64 results
+
+no return
+"""
 function write_X_file(file_path::String, results::Vector{Float64})
 	writedlm(file_path, results)
 end
 
+"""
+writes vector of results to an "x" file with calculated error
+(real result should be a vector of ones)
+
+Parameters:
+@file_path - path of the "x" file to be written
+@results - vector of Float64 results
+@size - size of the vector of results
+
+no return
+"""
 function write_X_file_with_error(file_path::String, results::Vector{Float64}, size::Int64)
 	real_values = ones(size)
 	error = norm(real_values - results) / norm(results)
