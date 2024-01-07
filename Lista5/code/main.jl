@@ -103,9 +103,8 @@ b = calculate_right_side(M, size, block_size)
 L = SparseArrays.spzeros(size, size)
 p = gauss_LU!(M, L, size, block_size)
 solution = solve_LU(M, L, b, size, block_size)
-println(solution)
+write_X_file_with_error("./x.txt", solution, size)
 
-# wypisywanie do pliku na z prawa strona
 # blocksys do poprawy
 # wykresy
 # tester

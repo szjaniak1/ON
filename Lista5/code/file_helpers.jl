@@ -9,10 +9,11 @@ using .matrixgen
 
 module file_helpers
 
-export read_A_file, read_B_file, write_X_file, write_X_file_with_abs
+export read_A_file, read_B_file, write_X_file, write_X_file_with_error
 
 using SparseArrays
 using DelimitedFiles
+using LinearAlgebra
 
 function read_A_file(file_path::String)
 	file = open(file_path, "r")
@@ -53,8 +54,11 @@ function write_X_file(file_path::String, results::Vector{Float64})
 	writedlm(file_path, results)
 end
 
-function write_X_file_with_abs(file_path::String, results::Vector{Float64}, real_results::Vector{Float64})
-
+function write_X_file_with_error(file_path::String, results::Vector{Float64}, size::Int64)
+	real_values = ones(size)
+	error = norm(real_values - results) / norm(results)
+	pushfirst!(results, error)
+	writedlm(file_path, results)
 end
 
 end
