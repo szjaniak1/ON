@@ -62,7 +62,51 @@
 
 \subsection*{Użyte algorytmy i ich optymalizacje}
 \subsubsection*{Eliminacja Gaussa}
-	
+	Podstawowym narzędziem zastosowanym w procesie rozwiązania jest wysoce efektywna metoda eliminacji Gaussa. To zaawansowane narzędzie algorytmiczne znajduje szerokie zastosowanie zarówno w rozwiązywaniu skomplikowanych układów równań liniowych, jak i w obliczeniach dotyczących rozkładu LU macierzy. Metoda ta operuje jedynie na elementarnych operacjach, takich jak odejmowanie czy dodawanie wielokrotności rzędów i kolumn macierzy.\\
+
+	Proces rozwiązywania z wykorzystaniem tej metody polega na modyfikacji macierzy, aby uzyskać macierz trójkątną, eliminując wszystkie elementy znajdujące się poniżej głównej przekątnej. Iteracyjne zerowanie kolejnych elementów jest kluczowe w tym procesie. Na przykład, aby wyzerować elementy w pierwszym wierszu poniżej diagonali, odejmujemy od danego wiersza odpowiednio przemnożony przez współczynnik z = $a_{i1}/a_{11}$. Przy rozwiązywaniu układu równań te transformacje uwzględniają również operacje odejmowania i dodawania w ramach wektora stron prawych.\\
+
+	Otrzymany w rezultacie układ równań z macierzą trójkątną jest równoważny pierwotnemu układowi. Należy jednak zauważyć, że ta metoda działa poprawnie tylko wtedy, gdy elementy na głównej przekątnej (na przykład $a_{11}$ w tym przypadku) nie są zerowe. W sytuacji, gdy takie zera występują, stosuje się technikę częściowego wyboru elementu głównego. Proces ten polega na wyborze w każdym kroku rzędu z elementem głównym, czyli o największej wartości bezwzględnej, i zamianie go z aktualnie rozpatrywanym rzędem. Ta procedura pozwala uniknąć zer na diagonali, jednak wprowadza dodatkowy nakład czasowy związany z identyfikacją i zamianą elementu głównego.\\
+
+	Po zakończeniu eliminacji Gaussa, do rozwiązania układu równań wykorzystuje się algorytm podstawiania wstecz. Ten etap zwraca wektor wynikowy $x_1, x_2, x_3, ..., x_n$, gdzie każda wartość odpowiada rozwiązaniu odpowiadającej zmiennej.\\
+
+	W standardowym wydaniu, algorytm rozwiązywania układów równań za pomocą metody eliminacji Gaussa charakteryzuje się złożonością czasową $O(n^3)$. Natomiast dla algorytmu podstawiania wstecz, ta złożoność wynosi $O(n^2)$. Sumując oba etapy, łączna złożoność algorytmu eliminacji Gaussa wraz z podstawianiem wstecznym wynosi $O(n^3)$.\\
+
+	Dzięki charakterystycznej strukturze analizowanej macierzy możemy dokonać istotnych optymalizacji w naszych stosowanych metodach. Warto zwrócić uwagę na istotny fakt, że nie jest konieczne zerowanie wszystkich elementów kolumn znajdujących się poniżej głównej przekątnej. Wielu z nich jest już na początku równo zerowych.
+
+	Przechodząc przez kolejne kolumny, nie musimy analizować wszystkich rzędów w tych kolumnach. Maksymalnym odchyleniem pod diagonalę jest rozmiar bloku, będącego jednostką macierzy blokowej, tworzącej naszą macierz. Równocześnie musimy odejmować mnożnik jedynie tyle razy od kolejnych rzędów, ile jest to konieczne do prawidłowego przeprowadzenia eliminacji. Obejście niższych rzędów, które już są zerowe, przekłada się na złożoność eliminacji rzędu $O(nl^2)$, a jeśli l jest stałe - $O(n)$. Analogiczne optymalizacje można zastosować także do wyboru elementu głównego. W procesie rozwiązywania nie musimy rozpatrywać wszystkich rzędów w sumie, ponieważ dodawanie zera nie ma wpływu na wynik.
+
+\clearpage
+
+\subsubsection*{Rozkład LU}
+	Przy wykorzystaniu algorytmu eliminacji Gaussa otwiera się również możliwość przeprowadzenia tzw. rozkładu LU, będącego integralną częścią metody LU, innego sposobu rozwiązania układów równań liniowych. Ten szczególny rozkład polega na stworzeniu dwóch macierzy, L i U, kolejno macierzy trójkątnej dolnej i górnej, takich że $A = L \cdot U$, gdzie produkty mają postać:
+
+	\[
+	L = 
+	\begin{bmatrix}
+	l_{11} & 0 & \dots & 0 \\
+	l_{21} & l_{22} & \dots & 0 \\
+	\vdots & \vdots & \ddots & \vdots \\
+	l_{n1} & l_{n2} & \dots & l_{nn}
+	\end{bmatrix}
+	\]
+
+	\[
+	U = \\
+	\begin{bmatrix}
+	u_{11} & u_{12} & \dots & u_{1n} \\
+	0 & u_{22} & \dots & u_{2n} \\
+	\vdots & \vdots & \ddots & \vdots \\
+	0 & 0 & \dots & u_{nn}
+	\end{bmatrix}
+	\]
+
+	Rozkład ten jest osiągany za pomocą metody eliminacji Gaussa, gdzie macierz U jest uzyskiwana w tradycyjny sposób, a macierz L wypełniana jest poprzez zapamiętywanie mnożników użytych do zerowania elementów. Mnożnik użyty do wyzerowania $a_{ij}$ zostaje zarejestrowany w analogicznej komórce $l_{ij}$ w macierzy L. Podobnie jak w poprzedniej metodzie, istnieje możliwość modyfikacji z wyborem elementu głównego, eliminującej błędy związane z zerami.
+
+	Złożoność obliczeniowa tego rozkładu jest równa złożoności eliminacji Gaussa, wynoszącej $O(n^3)$, natomiast złożoność rozwiązania uzyskanego układu z U i L wynosi $O(n^2)$. Wartościową cechą tej metody jest także fakt, że wektor stron prawych pojawia się tylko w jednym z równań pary. To oznacza, że w przypadku zmiany wektora, nie trzeba ponownie obliczać obu równań, wystarczy przeliczyć jedno z nich, zachowując drugie jako stałą.
+
+
+	Podobnie jak w wcześniejszej metodzie, kluczowe jest uwzględnienie charakterystycznej struktury analizowanej macierzy oraz ustalenie indeksów do iteracji, które będą analogiczne do tych z poprzedniego etapu. Ta strategia po raz kolejny przynosi nam złożoność liniową, różniącą się jedynie o stałą, gdyż proces rozkładu LU wymaga nieco więcej operacji.
 
 
 
