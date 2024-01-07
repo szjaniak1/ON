@@ -21,8 +21,8 @@ function generate_data(start_size::Int64, end_size::Int64, block_size::Int64, st
 	end
 end
 
-function gauss_with_pivots_LU_test(M, L, b, size, block_size)
-    p = gauss_with_pivots_LU!(M, L, size, block_size)
+function LU_with_pivots_test(M, L, b, size, block_size)
+    p = LU_with_pivots(M, L, size, block_size)
     solve_LU_with_pivots(M, L, b, size, block_size, p)
 end
 
@@ -31,8 +31,8 @@ function gauss_with_pivots_test(M, L, b, size, block_size)
     solve_gauss_with_pivots(M, b, size, block_size, p)
 end
 
-function gauss_LU_test(M, L, b, size, block_size)
-    p = gauss_LU!(M, L, size, block_size)
+function LU_test(M, L, b, size, block_size)
+    p = LU(M, L, size, block_size)
     solve_LU(M, L, b, size, block_size)
 end
 
@@ -101,11 +101,11 @@ file_path = "../data/Dane16/A.txt"
 M, size, block_size = read_A_file(file_path)
 b = calculate_right_side(M, size, block_size)
 L = SparseArrays.spzeros(size, size)
-p = gauss_LU!(M, L, size, block_size)
-solution = solve_LU(M, L, b, size, block_size)
-write_X_file_with_error("./x.txt", solution, size)
+p = LU_with_pivots(M, L, size, block_size)
+solution = solve_LU_with_pivots(M, L, b, size, block_size, p)
+print(solution)
+# write_X_file_with_error("./x.txt", solution, size)
 
 # blocksys do poprawy
 # wykresy
-# tester
 # dokumentacja

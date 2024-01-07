@@ -9,13 +9,24 @@ module blocksys
 using SparseArrays
 
 export calculate_right_side
-export gauss, gauss_LU!, gauss_with_pivots, gauss_with_pivots_LU!
+export gauss, LU, gauss_with_pivots, LU_with_pivots
 export solve_LU, solve_LU_with_pivots, solve_gauss, solve_gauss_with_pivots
 
 export SMatrix
 
 SMatrix = SparseMatrixCSC{Float64, Int64}
 
+"""
+calculates "b" right side of the equation based on the matrix
+equation: Ax = b, x = [1, 1, ..., 1]
+
+Parameters:
+@M - SparseMatrix with no "zero" nodes
+@size - size of the matrix
+@block_size - size of submatrixes in matrix
+
+return: calculated vector "b" of Float64
+"""
 function calculate_right_side(M::SMatrix, size::Int64, block_size::Int64)
 	result = zeros(Float64, size)
 
@@ -31,22 +42,22 @@ function calculate_right_side(M::SMatrix, size::Int64, block_size::Int64)
 	return result
 end
 
-function gauss(M!::SMatrix, b!::Vector{Float64}, size::Int64, block_size::Int64)
+function gauss(M::SMatrix, b::Vector{Float64}, size::Int64, block_size::Int64)
     for k in 1:size-1
         for i in k+1:min(size, k + block_size + 1)
-            z = M![i, k] / M![k, k]
-            M![i, k] = 0.0
+            z = M[i, k] / M[k, k]
+            M[i, k] = 0.0
 
             for j in k+1:min(size, k + block_size + 1)
-                M![i, j] -= z * M![k, j]
+                M[i, j] -= z * M[k, j]
             end
 
-            b![i] -= z * b![k]
+            b[i] -= z * b[k]
         end
     end
 end
 
-function gauss_with_pivots(M!::SMatrix, b!::Vector{Float64}, size::Int64, block_size::Int64)
+function gauss_with_pivots(M::SMatrix, b::Vector{Float64}, size::Int64, block_size::Int64)
     pivots = collect(1:size)
 
     for k in 1:size-1
@@ -54,8 +65,8 @@ function gauss_with_pivots(M!::SMatrix, b!::Vector{Float64}, size::Int64, block_
         last_row = 0
 
         for i in k:min(size, k + block_size + 1)
-            if abs(M![pivots[i], k]) > last_column
-                last_column = abs(M![pivots[i], k])
+            if abs(M[pivots[i], k]) > last_column
+                last_column = abs(M[pivots[i], k])
                 last_row = i
             end
         end
@@ -63,13 +74,13 @@ function gauss_with_pivots(M!::SMatrix, b!::Vector{Float64}, size::Int64, block_
         pivots[last_row], pivots[k] = pivots[k], pivots[last_row]
 
         for i in k+1:min(size, k + block_size + 1)
-            z = M![pivots[i], k] / M![pivots[k], k]
-            M![pivots[i], k] = 0.0
+            z = M[pivots[i], k] / M[pivots[k], k]
+            M[pivots[i], k] = 0.0
 
             for j in k+1:min(size, k + 2 * block_size)
-                M![pivots[i], j] = M![pivots[i], j] - z * M![pivots[k], j]
+                M[pivots[i], j] = M[pivots[i], j] - z * M[pivots[k], j]
             end
-            b![pivots[i]] = b![pivots[i]] - z * b![pivots[k]]
+            b[pivots[i]] = b[pivots[i]] - z * b[pivots[k]]
         end
     end
 
@@ -111,22 +122,22 @@ function solve_gauss_with_pivots(M::SMatrix, b::Vector{Float64}, size::Int64, bl
     return result
 end
 
-function gauss_LU!(U!::SMatrix, L!::SMatrix, size::Int64, block_size::Int64)
+function LU(U::SMatrix, L::SMatrix, size::Int64, block_size::Int64)
     for k in 1:size-1
-        L![k, k] = 1.0
+        L[k, k] = 1.0
         for i in k+1:min(size, k + block_size + 1)
-            z = U![i, k] / U![k, k]
-            L![i, k] = z
-            U![i, k] = 0.0
+            z = U[i, k] / U[k, k]
+            L[i, k] = z
+            U[i, k] = 0.0
             for j in k+1:min(size, k + 2 * block_size)
-                U![i, j] -= z *U![k, j]
+                U[i, j] -= z *U[k, j]
             end
         end
     end
-    L![size, size] = 1
+    L[size, size] = 1
 end
 
-function gauss_with_pivots_LU!(U!::SMatrix, L!::SMatrix, size::Int64, block_size::Int64)
+function LU_with_pivots(U::SMatrix, L::SMatrix, size::Int64, block_size::Int64)
     pivots = collect(1:size)
 
     for k in 1:size-1
@@ -134,8 +145,8 @@ function gauss_with_pivots_LU!(U!::SMatrix, L!::SMatrix, size::Int64, block_size
         maximum_index = 0
 
         for i in k:min(size, k + block_size + 1)
-            if abs(U![pivots[i], k]) > maximum_column_value
-                maximum_column_value = abs(U![pivots[i], k])
+            if abs(U[pivots[i], k]) > maximum_column_value
+                maximum_column_value = abs(U[pivots[i], k])
                 maximum_index = i
             end
         end
@@ -143,13 +154,13 @@ function gauss_with_pivots_LU!(U!::SMatrix, L!::SMatrix, size::Int64, block_size
         pivots[maximum_index], pivots[k] = pivots[k], pivots[maximum_index]
 
         for i in k+1:min(size, k + block_size + 1)
-            z = U![pivots[i], k] / U![pivots[k], k]
+            z = U[pivots[i], k] / U[pivots[k], k]
 
-            L![pivots[i], k] = z
-            U![pivots[i], k] = 0
+            L[pivots[i], k] = z
+            U[pivots[i], k] = 0
 
             for j in k+1:min(size, k + 2 * block_size)
-                U![pivots[i], j] = U![pivots[i], j] - z * U![pivots[k], j]
+                U[pivots[i], j] = U[pivots[i], j] - z * U[pivots[k], j]
             end
         end
     end
@@ -195,7 +206,7 @@ end
 function forward_substitution_with_pivots(L::SMatrix, b::Vector{Float64}, size::Int64, block_size::Int64, pivots::Vector{Int64})
     for k in 1:size-1
         for i in k+1:min(size, 2 * block_size + k + 5)
-            b[pivots[i]] -= b[pivots[i]] - L[pivots[i], k] * b[pivots[k]]
+            b[pivots[i]] = b[pivots[i]] - L[pivots[i], k] * b[pivots[k]]
         end
     end
 end
