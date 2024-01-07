@@ -26,15 +26,15 @@ no return
 function read_A_file(file_path::String)
 	file = open(file_path, "r")
 
-	size, block_size = parse.(Int64, split(readline(file), ' '))
-	rows::Vector{Int64} = []
-	columns::Vector{Int64} = []
+	size, block_size = parse.(Int, split(readline(file), ' '))
+	rows::Vector{Int} = []
+	columns::Vector{Int} = []
 	values::Vector{Float64} = []
 
 	while !eof(file)
 		i, j, val = split(readline(file), ' ')
-		push!(rows, parse(Int64, i))
-		push!(columns, parse(Int64, j))
+		push!(rows, parse(Int, i))
+		push!(columns, parse(Int, j))
 		push!(values, parse(Float64, val))
   	end
 
@@ -55,7 +55,7 @@ function read_B_file(file_path::String)
 	file = open(file_path, "r")
 
 	result::Vector{Float64} = []
-	size = parse(Int64, readline(file))
+	size = parse(Int, readline(file))
 
 	while !eof(file)
 		val = parse(Float64, readline(file))
@@ -90,7 +90,7 @@ Parameters:
 
 no return
 """
-function write_X_file_with_error(file_path::String, results::Vector{Float64}, size::Int64)
+function write_X_file_with_error(file_path::String, results::Vector{Float64}, size::Int)
 	real_values = ones(size)
 	error = norm(real_values - results) / norm(results)
 	pushfirst!(results, error)
