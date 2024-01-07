@@ -38,12 +38,12 @@ function gauss_test(M, b, size, block_size)
 end
 
 function plot_times(siz, times1, times2, times3, times4)
-	plot(siz, [times1, times2, times3, times4], marker=(:circle,5), title="times_comparison", label=["LU" "gauss" "gauss_with_pivots" "LU_with_pivots"], left_margin = 10mm, bottom_margin=5mm, xlabel="size")
+	plot(siz, [times1, times2, times3, times4], marker=(:circle,3), title="times_comparison", label=["LU" "gauss" "gauss_with_pivots" "LU_with_pivots"], left_margin = 10mm, bottom_margin=5mm, xlabel="size")
 	savefig("../graphs/times_comparison.png")
 end
 
 function plot_memory(siz, memory1, memory2, memory3, memory4)
-	plot(siz, [memory1, memory2, memory3, memory4], marker=(:circle,5), title="memory_comparison", label=["LU" "gauss" "gauss_with_pivots" "LU_with_pivots"], left_margin = 15mm, bottom_margin=5mm, xlabel="size")
+	plot(siz, [memory1, memory2, memory3, memory4], marker=(:circle,3), title="memory_comparison", label=["LU" "gauss" "gauss_with_pivots" "LU_with_pivots"], left_margin = 15mm, bottom_margin=5mm, xlabel="size")
 	savefig("../graphs/memory_comparison.png")
 end
 
@@ -56,44 +56,42 @@ function single_time_memory_test(file_path::String, iterations::Int, test_functi
 	for rep in 1:iterations
 		M = copy(matrix)
 		b = calculate_right_side(M, size, block_size)
-	    (_, time, memory) = @timed test_function(M, b, size, block_size)
-	    total_time += time
-	    total_memory += memory
+	    stats = @timed test_function(M, b, size, block_size)
+	    total_time += stats.time
+	    total_memory += stats.bytes
 	end
 	mean_time = total_time / iterations
 	mean_memory = total_memory / iterations
 	println(" size; ", replace(string(mean_time), "." => ","), "; ", replace(string(format(mean_memory)), "." => ","))
 
-	return mean_time, mean_memory, size
+	return mean_time, mean_memory
 end
 
 function test(iterations::Int, test_function::Function)
 	file_paths = readdir("../data/WygenerowaneDane/", join=true)
 	times::Vector{Float64} = []
 	memory::Vector{Int} = []
-	sizes::Vector{Int} = []
 
 	for path in file_paths
-		time, mem, size = single_time_memory_test(path, iterations, test_function)
+		time, mem = single_time_memory_test(path, iterations, test_function)
 		push!(times, time)
 		push!(memory, mem)
-		push!(sizes, size)
 	end
 
-	return times, memory, sizes
+	return times, memory
 end
 
-start_c::Int = 10000
-end_c::Int = 40000
-step::Int = 1000
-# generate_data(start_c, end_c, 4, step, 1.0)
+start_c::Int = 1000
+end_c::Int = 8200
+step::Int = 400
+# generate_data(start_c, end_c, 4, step, 10.0)
 
-iterations = 30
+iterations = 100
 times1, memory1, = test(iterations, LU_test)
 times2, memory2, = test(iterations, gauss_test)
 times3, memory3, = test(iterations, gauss_with_pivots_test)
 times4, memory4, = test(iterations, LU_with_pivots_test)
-siz = range(start_c, end_c, length = 31)
+siz = range(start_c, end_c, length = 19)
 
 plot_times(siz, times1, times2, times3, times4)
 
