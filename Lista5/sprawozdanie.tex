@@ -58,7 +58,7 @@
 
 \section*{Rozwiązanie}
 \subsection*{Problem złożoności pamięciowej}
-	Rozwiązanie korzysta z pakietu SparseArrays z biblioteki standardowej. Wykorzystana struktura danych o nazwie SparseMatrixSCS przechowuje jedynie niezerowe wartości macierzy co pozwala zaoszczędzić sporo pamięci w porównaniu ze zwykłej tablicy dwuwymiarowej która zajmowałaby aż $O(n^2)$ miejsca. W analizie naszego rozwiązania i wyników będziemy zakładać, że odczyt z tej struktury odbywa się w czasie stałym.
+	Rozwiązanie korzysta z pakietu SparseArrays z biblioteki standardowej. Wykorzystana struktura danych o nazwie SparseMatrixSCS przechowuje jedynie niezerowe wartości macierzy co pozwala zaoszczędzić sporo pamięci w porównaniu ze zwykłą tablicą dwuwymiarową, która zajmowałaby aż $O(n^2)$ miejsca. W analizie naszego rozwiązania i wyników będziemy zakładać, że odczyt z tej struktury odbywa się w czasie stałym.
 
 \subsection*{Użyte algorytmy i ich optymalizacje}
 \subsubsection*{Eliminacja Gaussa}
@@ -68,7 +68,7 @@
 
 	Otrzymany w rezultacie układ równań z macierzą trójkątną jest równoważny pierwotnemu układowi. Należy jednak zauważyć, że ta metoda działa poprawnie tylko wtedy, gdy elementy na głównej przekątnej (na przykład $a_{11}$ w tym przypadku) nie są zerowe. W sytuacji, gdy takie zera występują, stosuje się technikę częściowego wyboru elementu głównego. Proces ten polega na wyborze w każdym kroku rzędu z elementem głównym, czyli o największej wartości bezwzględnej, i zamianie go z aktualnie rozpatrywanym rzędem. Ta procedura pozwala uniknąć zer na diagonali, jednak wprowadza dodatkowy nakład czasowy związany z identyfikacją i zamianą elementu głównego.\\
 
-	Po zakończeniu eliminacji Gaussa, do rozwiązania układu równań wykorzystuje się algorytm podstawiania wstecz. Ten etap zwraca wektor wynikowy $x_1, x_2, x_3, ..., x_n$, gdzie każda wartość odpowiada rozwiązaniu odpowiadającej zmiennej.\\
+	Po zakończeniu eliminacji Gaussa, do rozwiązania układu równań wykorzystuje się algorytm podstawiania wstecz. Ten etap zwraca wektor wynikowy $x_1, x_2, x_3, ..., x_n$.\\
 
 	W standardowym wydaniu, algorytm rozwiązywania układów równań za pomocą metody eliminacji Gaussa charakteryzuje się złożonością czasową $O(n^3)$. Natomiast dla algorytmu podstawiania wstecz, ta złożoność wynosi $O(n^2)$. Sumując oba etapy, łączna złożoność algorytmu eliminacji Gaussa wraz z podstawianiem wstecznym wynosi $O(n^3)$.\\
 
@@ -108,6 +108,37 @@
 
 	Podobnie jak w wcześniejszej metodzie, kluczowe jest uwzględnienie charakterystycznej struktury analizowanej macierzy oraz ustalenie indeksów do iteracji, które będą analogiczne do tych z poprzedniego etapu. Ta strategia po raz kolejny przynosi nam złożoność liniową, różniącą się jedynie o stałą, gdyż proces rozkładu LU wymaga nieco więcej operacji.
 
+\subsection*{Przeprowadzone testy}
+	\begin{itemize}
+        \item minimalny rozmiar macierzy - 1000
+        \item maksymalny rozmiar macierzy - 8200
+        \item rozmiar pojedyńczego bloku - 4
+        \item skok w rozmiarze kolejnych macierzy - 400
+        \item ilość przeprowadzonych prób - 100
+    \end{itemize}
+
+\subsubsection*{Otrzymane wyniki}
+	\begin{figure}[h]
+	    \centering
+	    \includegraphics[width=0.6\textwidth]{./graphs/times_comparison.png}
+	    \\{Porównanie na podstawie czasu (w sekundach)}
+	\end{figure}
+
+\clearpage
+
+	\begin{figure}[h]
+	    \centering
+	    \includegraphics[width=0.6\textwidth]{./graphs/memory_comparison.png}
+	    \\{Porównanie na podstawie pamięci (w bajtach)}
+	\end{figure}
+
+	Widzimy, że w zakresie pamięci przeprowadzone optymalizacje wykazują wysoką skuteczność. Algorytmy pracujące na modelu macierzy zwykłych potrzebowałyby znacznie więcej zużytej pamięci do wykonania danych obliczeń. Zaobserwowane skoki w ilości zużytych bajtów wynikają prawdopodobnie z wewnętrznego zachowania struktury SparseArrays, która może dynamicznie powiększać swój rozmiar na potrzeby przechowywania większej liczby wartości\\
+
+
+	Algorytmy z zastosowaniem wyboru elementu głównego na wykresach zobowiązane są do przeprowadzania permutacji rzędów macierzy przed rozpoczęciem obliczeń, co prowadzi do ich niższej wydajności w porównaniu do wariantów bez tego mechanizmu. Natomiast algorytmy LU ustępują naszym modyfikacjom metody Gaussa ze względu na konieczność rzeczywistego wypełnienia dwóch macierzy zamiast jednej, a następnie konieczność rozwiązania obu z nich. To zdecydowanie wpływa na ich efektywność w procesie rozwiązywania układów równań.
+
+\subsection*{Wnioski}
+	Prawidłowa analiza problemu może znacząco ułatwić uzyskanie rozwiązania, które w pierwszym, łagodniejszym podejściu wydawało się kosztowne lub wręcz niemożliwe do osiągnięcia. Drobne modyfikacje pierwotnych algorytmów pozwoliły nam istotnie ograniczyć ich złożoność obliczeniową. Posiadając pełną wiedzę na temat struktury danych, zdołaliśmy również zminimalizować zużycie pamięci, starannie dobierając najbardziej ekonomiczny sposób ich przechowywania.
 
 
 \end{document}
