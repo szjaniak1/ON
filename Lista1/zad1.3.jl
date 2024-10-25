@@ -4,4 +4,4 @@ Obliczenia Naukowe
 Lista 1, zadanie 1.3
 =#
 
-println(string(floatmin(Float32)) * " -- " * string(floatmin(Float64)))
+println("[Float16] : " * string(floatmin(Float16)) * " [Float32] : " * string(floatmin(Float32)) * " [Float64] : " * string(floatmin(Float64)))

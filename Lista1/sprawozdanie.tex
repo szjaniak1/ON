@@ -21,12 +21,9 @@
 	\begin{algorithmic}
         \State $x \gets 1.0$
         \State $macheps \gets 1.0$
-        \For{ $i$ to $50$ }
-            \If{ $x + \frac{macheps}{2} = x$ }
-            	\State break
-            \EndIf
+        \While{ $x + \frac{macheps}{2} \neq x$ }
             \State $macheps \gets \frac{macheps}{2}$
-        \EndFor
+        \EndWhile
         \State \textbf{return} $macheps$
     \end{algorithmic}
     \end{algorithm}
@@ -45,7 +42,9 @@
         \end{tabular}
     \end{center}
 \subsubsection{Wnioski}
-    Wraz z wzrostem precyzji zmniejsza sie $macheps$.
+    Wyniki obliczone iteracyjnie są zgodne z wynikami zwracanymi przez funkcję $eps$ w Julii.
+    Wyniki pokrywają się również z wartościami z pliku nagłówkowego $float.h$ w języku C, są one zgodne ze standardem IEEE-754 co potwierdza poprawność implementacji.
+    Liczba macheps jest ściśle powiązana z precyzją arytmetyki, im wyższa precyzja tym mniejszy będzie macheps.
 
 \subsection{Eta}
 	$eta$ to najmniejsza liczba taka, że $eta > 0.0$
@@ -56,12 +55,9 @@
     \caption{$eta$ iteracyjnie}\label{alg:cap}
     \begin{algorithmic}
         \State $eta \gets 1.0$
-        \For{ $i$ to $1100$ }
-            \If{ $\frac{eta}{2} = 0.0$ }
-            	\State break
-            \EndIf
+        \While{ $\frac{eta}{2} \neq 0.0$ }
             \State $eta \gets \frac{eta}{2}$
-        \EndFor
+        \EndWhile
         \State \textbf{return} $eta$
     \end{algorithmic}
     \end{algorithm}
@@ -78,6 +74,9 @@
         \end{tabular}
     \end{center}
 \subsubsection{Wnioski}
+    Wyniki obu funkcji pokrywają się ze standardem IEEE-754 co potwierdza poprawność implementacji.
+\\
+\\
     $MIN_{sub} = 2^{1-t}*2^{c_{min}}$\\
     gdzie $t$ to liczba cyfr mantysy, a $c_{min}=-2^{d-1}+2$ gdzie, $d$ oznacza liczbę bitów przeznaczonych na zapis cechy.
         \begin{center}
@@ -89,7 +88,7 @@
         \hline
         \end{tabular}
     \end{center}
-    Z tego wynika, że $eta = MIN_{sub}$
+    Z tego wynika, że $eta = MIN_{sub}$, czyli najmniejsza liczba (zdenormalizowana), którą da się reprezentować w danej arytmetyce
 
 \subsection{$MIN_{nor}$}
     $MIN_{nor} = 2^{c_{min}}$\\
@@ -106,7 +105,7 @@
         \end{tabular}
     \end{center}
 \subsubsection{Wnioski}
-     $floatmin()$ dla danej arytmetyki jest równy z jej $MIN_{nor}$
+    $floatmin()$ dla danej arytmetyki jest równy z jej $MIN_{nor}$ z czego wynika ze funkcja ta zwraca najmniejszą liczbę znormalizowaną w danej arytmetyce
 
 \subsection{MAX}
 \subsubsection{Opis Problemu}
@@ -136,6 +135,8 @@
         \hline
         \end{tabular}
     \end{center}
+\subsubsection{Wnioski}
+    Wyniki pokrywają się również z wartościami z pliku nagłówkowego $float.h$ w języku C, są one zgodne ze standardem IEEE-754 co potwierdza poprawność implementacji.
 
 \section{Zadanie 2}
 \subsection{Twierdzenie Khan'a}
@@ -155,32 +156,32 @@
         \end{tabular}
     \end{center}
 \subsection{Wnioski}
-    Wyniki z wyrażenia od Khan'a różnią się znakiem dla Float16 i Float64.
+    Wyniki z wyrażenia od Khan'a różnią się znakiem dla Float16 i Float64, jednakże pomijając znak otrzymujemy te same wartości i w tym przypadku jego twierdzenie jest słuszne.
 
 \section{Zadanie 3}
 \subsection{Opis problemu}
 	Sprawdzenie rozmieszczenia liczb zmiennoprzecinkowych Float64 w standardzie IEEE 754 w przedziałach [1, 2], [$\frac{1}{2}$, 1] oraz [2, 4].
 \subsection{Rozwiązanie}
 	$\delta$ - krok o który będziemy powiększać początkowe liczby.\\
-    Obserwując otrzymywane wyniki, będziemy mogli dostować wielkośc kroku, aby uzyskać zwiększenie o jeden bit na danym przedziale.
+    Obserwując otrzymywane wyniki, będziemy mogli dostować wielkość kroku, aby uzyskać zwiększenie o jeden bit na danym przedziale.
 \subsection{Wyniki}
 	$\delta=2^{-52}$ dla przedziału [1, 2]: 
 	Różnica po jednym kroku\\
 	0011111111110000000000000000000000000000000000001010110011000001 -- 1.00000000000982\\
 	0011111111110000000000000000000000000000000000001010110011000010 -- 1.0000000000098201\\
 	$\delta=\frac{2^{-52}}{2}$ dla przedziału [$\frac{1}{2}$, 1]:
-	Tutaj musieliśmy podzielić krok przez 2 aby uzyskac taki sam rezultat jak wcześniej 
-	Różnica po jednym kroku\\
+	Tutaj musieliśmy podzielić krok przez 2 aby uzyskac taki sam rezultat jak wcześniej\\
 	0011111111100000000000000000000000000000000000001001001101001100 -- 0.5000000000041864\\
 	0011111111100000000000000000000000000000000000001001001101001101 -- 0.5000000000041865\\
 	$\delta=2^{-52} * 2$ dla przedziału [2, 4]:
-	Tutaj sytuacja odwrotna, długość kroku musiała zostać zwiększona
-	Różnica po jednym kroku\\
+	Tutaj sytuacja odwrotna, długość kroku musiała zostać zwiększona\\
 	0100000000000000000000000000000000000000000000000111110111011101 -- 2.000000000014309\\
 	0100000000000000000000000000000000000000000000000111110111011110 -- 2.0000000000143094\\
 \subsection{Wnioski}
 	W przedziale [1, 2] liczby występują co $\delta=2^{-52}$.\\
-	W przedziale [$\frac{1}{2}$, 1] 2 razy częsciej, a w przedziale [2, 4] 2 razy rzadziej.
+	W przedziale [$\frac{1}{2}$, 1] 2 razy częściej, a w przedziale [2, 4] 2 razy rzadziej.
+    Dla arytmetyki Float64 liczba bitów przeznaczonych na mantyse $t = 53$, dlatego gęstość występowania liczb w danym przedziale możemy przedstawić w następujący sposób:
+    $2^{-t + d}$, gdzie $d$ to potęga liczby 2 przy górnej granicy przedziału.
 
 \section{Zadanie 4}
 \subsection{Opis problemu}
@@ -231,6 +232,10 @@
         \hline
         \end{tabular}
     \end{center}
+\subsubsection{Wnioski}
+    Widzimy, że w zależności od obranego sposobu obliczania iloczynu skalarnego wyniki mniej lub bardziej odbiegają od rzeczywistości.
+    Dla Float32 mamy bardzą dużą rozbieżność ze względu na zbyt niską precyzję arytmetyki. Na podstawie wyników możemy również stwierdzić, że sposób liczenia ma duży wpływ na dokładność naszego wyniku.
+    Dodawanie "w przód" oraz "w tył" wygenerowało znacznie większy błąd względny niż w przypadku dwóch następnych metod. Widzimy, że prawidłowy wynik jest bardzo bliski zera co podpowiada nam dlaczego uzyskany wynik to 0.0 - nawet w przypadku Float64 precyzja jest zbyt niska.
 
 \section{Zadanie 6}
 \subsection{Opis problemu}
@@ -267,7 +272,10 @@
         \end{tabular}
     \end{center}
 \subsection{Wnioski}
-    Funkcja $f(x)$ zwróciła jeden ujemny wynik co nie jest możliwe, do tego od pewnego momentu zwraca wynik 0.0 co jest mało dokładne, stąd wniosek, że funkcja $g(x)$ wydaje się być bardziej wiarygodna.
+    Widzimy, że funkcja $g(x)$ jest dokładniejsza, widać to przy największej i najmniejszych wartościach.
+    Ujemny wynik zwrócony przez $f(x)$ nie powinien być możliwy do osiągnięcia, niestety ten wynik jak i ostatnie zerowe są spowodowane przez utratę precyzji przy odejmowaniy małych, bliskich siebie liczb.
+    Zapisanie tej samej funkcji tak, aby uniknąć odejmowania skutecznie omija ten problem, który w rzeczywistości nie powinien mieć miejsca, gdyż są to dokładnie takie same funkcje.
+    Pokazuje to jeden z problem w kalkulacjach w arytmetyce zmiennopozycyjnej.
 
 \section{Zadanie 7}
 \subsection{Opis problemu}
@@ -295,6 +303,7 @@
         \end{tabular}
     \end{center}
 \subsection{Wnioski}
-    W wynikach możemy zaobserować ze od pewnego momentu zmniejszanie wartości $h$ wcale nie poprawia przybliżenia wartości pochodnej. Dzieje sie tak prawdopodbnie przez coraz to mniejsze wartości co może powodować problemy w arytmetyce zmiennoprzecinkowej.
+    W wynikach możemy zaobserować ze od pewnego momentu zmniejszanie wartości $h$ wcale nie poprawia przybliżenia wartości pochodnej.
+    Prawdopodobnie znowu występuje tutaj problem odejmowania bliskich sobie liczb. Dodatkowo może pojawiać się utrata precyzji przy reprezentowaniu $x_{0} + h$.
 
 \end{document}
