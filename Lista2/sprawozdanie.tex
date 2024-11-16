@@ -47,7 +47,8 @@
 \subsection*{Wnioski}
 	Przy usunięciu ostatniej 9 z $x_4$ oraz ostatniej 7 z $x_5$ dostajemy różne wyniki dla podwójnej precyzji.
 	Po tak lekkiej zmianie danych możemy zauważyć, że wyniki dla wszystkich funkcji są znacznie bardziej przybliżone, prawie identyczne.
-	Dla Float32 nie ma żadnej różnicy, gdyż jest to za mała precyzja. Według definicji jest to źle uwarunkowane zadanie.
+	Widzimy, że niewielkie zmiany danych powodują duże względne okształcenia wyników czyli zadanie jest źle uwarunkowane.
+	Dla Float32 nie ma żadnej różnicy, gdyż jest to za mała precyzja.
 
 \section*{Zadanie 2}
 \subsection*{Opis problemu}
@@ -165,7 +166,8 @@
 	\end{center}
 	Wyniki dla macierzy losowej
 \subsection*{Wnioski}
-	Uwarunkowanie macierzy $cond$ ma spory wpływ na skale otrzymywanych pomyłek.\\
+	Uwarunkowanie macierzy $cond$ ma spory wpływ na otrzymany błąd względny przy rozwiązywaniu układu.
+	Macierz Hilberta jest dobrze uwarunkowana.\\
 \section*{Zadanie 4}
 \subsection*{Opis problemu}
 	Użyć funkcji $roots$ (z pakietu Polynomials) do obliczenia 20 zer wielominau $P$ w postaci naturalnej. \\
@@ -188,13 +190,13 @@
 	\end{figure}
 \subsection*{Wnioski}
 	Po wykresach widać, że obliczone przez nas miejsca zerowe nie pokrywają się z rzeczywistością. \\
-	Wynika to z ograniczeń arytmetyki w Float64, która ma od 15 do 17 cyfr znaczących w systemie dziesiętnym. \\
-	Po modyfikacji jednego współczynnika rozbieżności mogą być jeszcze większe.
+	Wynika to z ograniczeń arytmetyki w Float64, która ma od 15 do 17 cyfr znaczących w systemie dziesiętnym, co niewystarcza na poprawne odwzorowanie liczby.
+	Powoduje to narastający błąd.
 
 \section*{Zadanie 5}
 \subsection*{Opis problemu}
 	Rozważmy równanie rekurencyjne \\
-	\centerline{$p_{n+1} := p_n^2 + rp_n(1 - p_n)$ dla $n = 0, 1...,$ \\}
+	\centerline{$p_{n+1} := p_n + rp_n(1 - p_n)$ dla $n = 0, 1...,$ \\}
 	gdzie $r$ jest pewną daną stałą, $r(1 - p_n)$ jest czynnikiem wzrostu populacji, a $p_0$ jest wielkością populacji stanowiącą procent maksymalnej wielkości populacji dla danego stanu środowiska. \\
 	Przeprowadzić następujące eksperymenty:
 	\begin{enumerate}
@@ -212,9 +214,7 @@
 		\end{subfigure}
 	\end{figure}
 \subsection*{Wnioski}
-	W pierwszym eksperymencie możemy zauważyć, że obcięcie wyniku do 3 miejsc po przecinku powoduje po chwili znaczne rozjechanie się wyników. \\
-	W drugim eksperymencie zjawisko jest podobne, większa precyzja pozwala na dokładniejsze wyniki, co również powoduje znaczne rozjechanie się wyników. \\
-	Pokazuje to jak bardzo wyniki naszych obliczeń mogą się różnić w zależności od odpowiednio dobranej precyzji.
+	Powyższe wyniki pokazują jake złe zapisywanie danych poprzez zaokrąglenie bądź ograniczenia arytmetyki może powodować spore odchylenia od prawidłowych wyników.
 
 \section*{Zadanie 6}
 \subsection*{Opis problemu}
@@ -235,28 +235,13 @@
 	\begin{figure}[H]
 		\centering
 		\begin{subfigure}[b]{\v\linewidth}
-			\includegraphics[width=\linewidth]{graphs/1.png}
-		\end{subfigure}
-		\begin{subfigure}[b]{\v\linewidth}
 			\includegraphics[width=\linewidth]{graphs/2.png}
 		\end{subfigure}
 		\begin{subfigure}[b]{\v\linewidth}
 			\includegraphics[width=\linewidth]{graphs/3.png}
 		\end{subfigure}
-		\begin{subfigure}[b]{\v\linewidth}
-			\includegraphics[width=\linewidth]{graphs/4.png}
-		\end{subfigure}
-		\begin{subfigure}[b]{\v\linewidth}
-			\includegraphics[width=\linewidth]{graphs/5.png}
-		\end{subfigure}
-		\begin{subfigure}[b]{\v\linewidth}
-			\includegraphics[width=\linewidth]{graphs/6.png}
-		\end{subfigure}
-		\begin{subfigure}[b]{\v\linewidth}
-			\includegraphics[width=\linewidth]{graphs/7.png}
-		\end{subfigure}
 	\end{figure}
 \subsection*{Wnioski}
-	Możemy zauważyć, że najciekawszym wykresem jest ten dla $x_0 = 1.999...$, wynika to z kumulujących się błędów obliczania precyzji.
-
+	Najciekawsza dla naszej analizy sytuacja pojawia sie w powyższych dwóch przypadach. Widzimy, że mała zmiana powoduje narastający błąd, który powoduje,
+	że otrzymane wyniki w żadnym stopniu nie są bliskie wynikom poprzednim.
 \end{document}

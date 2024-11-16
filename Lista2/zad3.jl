@@ -10,15 +10,15 @@ include("hilb.jl")
 include("matcond.jl")
 
 function right_side(a, x)
-	return a * x
+    return a * x
 end
 
 function gaussian_elimination(a, b)
-	return a \ b
+    return a \ b
 end
 
 function func(a, b)
-	return inv(a) * b
+    return inv(a) * b
 end
 
 function hilbert(size)

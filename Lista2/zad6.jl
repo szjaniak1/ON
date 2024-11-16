@@ -4,29 +4,34 @@ Obliczenia Naukowe
 Lista 2, zadanie 6
 =#
 
+using Pkg
+Pkg.update()
+Pkg.activate(temp=true)
+Pkg.add("Plots")
+Pkg.add("LaTeXStrings")
 using Plots
 using LaTeXStrings
 
 function plotting(x::Float64, c::Int8, file_name::String)
-	x_values = range(1, 40, length=40)
-	y_values = func(Float64(x), Int8(c))
-	plot(x_values, y_values, marker=(:circle,5), legend=false)
-	title!(L"x_0 = %$x, c = %$c")
-	savefig("graphs/" * file_name * ".png")  
+    x_values = range(1, 40, length=40)
+    y_values = func(Float64(x), Int8(c))
+    plot(x_values, y_values, marker=(:circle, 5), legend=false)
+    title!(L"x_0 = %$x, c = %$c")
+    savefig("graphs/" * file_name * ".png")
 end
 
 function func(x::Float64, c::Int8)
-	k::Int8 = 40
-	result = Float64[]
-	val::Float64 = 0.0
+    k::Int8 = 40
+    result = Float64[]
+    val::Float64 = 0.0
 
-	push!(result, x)
-	for i in 2:k
-		val = result[i - 1]^2 + c
-		push!(result, val)
-	end
+    push!(result, x)
+    for i in 2:k
+        val = result[i-1]^2 + c
+        push!(result, val)
+    end
 
-	return result
+    return result
 end
 
 
