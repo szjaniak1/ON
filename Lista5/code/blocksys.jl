@@ -26,19 +26,19 @@ Parameters:
 
 return: calculated vector "b" of Float64
 """
-function calculate_right_side(M::SMatrix, size::Int, block_size::Int)
-	result = zeros(Float64, size)
+function calculate_right_side(A::SparseMatrixCSC{Float64, Int64}, n::Int64, l::Int64)
+    [sum(A[i, max(1, i - ((i - 1) % l) - 1):min(n, l + i)]) for i in 1:n]
+end
 
-	for i in 1:size
-		start_c = convert(Int64, max(i - (2 + block_size), 1))
-		end_c = convert(Int64, min(i + block_size, size))
+function find_bound(k::Int64, block_size::Int64, size::Int64)
+    if k % block_size == 0
+        return k + block_size
+    end
+    if k % block_size == k + block_size - 1
+        return k + block_size + 1
+    end
 
-		for j in start_c:end_c
-			result[i] += M[i, j]
-		end
-	end
-
-	return result
+    return min(size, k + block_size - (k % block_size))
 end
 
 
@@ -89,7 +89,7 @@ function solve_gauss_with_pivots(A::SMatrix, b::Vector{Float64}, size::Int, bloc
     result[size] = b[pivots[size]] / A[pivots[size], size]
     for i in size - 1 : -1 : 1
         result[i] = b[pivots[i]]
-        for j in i + 1 : min(size, i + block_size)
+        for j in i + 1 : min(size, 2 * block_size + i)
             result[i] -= A[pivots[i], j] * result[j]
         end
         result[i] /= A[pivots[i], i]
@@ -173,7 +173,8 @@ end
 function gauss(A::SMatrix, b::Vector{Float64}, size::Int, block_size::Int)
     # Iteration trough columns
     for k in 1 : size - 1
-        for i in k + 1 : min(size, k + block_size - (k % block_size)) # Elements to eliminate in current column
+        bound = find_bound(k, block_size, size)
+        for i in k + 1 : bound # Elements to eliminate in current column
             z = A[i, k] / A[k, k] # element to eliminate / current element on diagona
             A[i, k] = 0.0
 
@@ -192,7 +193,7 @@ function gauss_with_pivots(A::SMatrix, b::Vector{Float64}, size::Int, block_size
     pivots = [1:size;]
 
     for k in 1 : size - 1
-        bound = min(size, k + block_size - (k % block_size))
+        bound = find_bound(k, block_size, size)
         j = reduce((x, y) -> abs(A[pivots[x], k]) >= abs(A[pivots[y], k]) ? x : y, k : bound)
 
         pivots[k], pivots[j] = pivots[j], pivots[k]
@@ -215,18 +216,18 @@ end
 
 function LU_decmp(A::SMatrix, size::Int, block_size::Int)
     for k in 1 : size - 1
-        for i in k + 1 : min(size, k + block_size - (k % block_size)) # bottom row
+        bound = find_bound(k, block_size, size)
+        for i in k + 1 : bound # bottom row
             try
                 m = A[i, k] / A[k, k]
                 A[i, k] = m
 
-                for j in k+1 : min(size, block_size + k) # last column
+                for j in k + 1 : min(size, block_size + k) # last column
                     A[i, j] -= m * A[k, j]
                 end
 
             catch err
                 error("Zero value on the diagonal of A at index ($k, $k)")
-
             end            
         end
     end
@@ -237,7 +238,7 @@ function LU_with_pivots(A::SMatrix, size::Int, block_size::Int)
     pivots = [1 : size;]
 
     for k in 1 : size - 1
-        bound = min(size, k + block_size - (k % block_size))
+        bound = find_bound(k, block_size, size)
         j = reduce((x, y) -> abs(A[pivots[x], k]) >= abs(A[pivots[y], k]) ? x : y, k : bound)
 
         pivots[k], pivots[j] = pivots[j], pivots[k]
@@ -254,6 +255,5 @@ function LU_with_pivots(A::SMatrix, size::Int, block_size::Int)
 
     return pivots
 end
-
 
 end
