@@ -70,19 +70,18 @@ end_c::Int = 8200
 step::Int = 400
 # generate_data(start_c, end_c, 4, step, 10.0)
 
-iterations = 100
-times1, memory1, = test(iterations, solve_gauss)
-times2, memory2, = test(iterations, solve_gauss_with_pivots)
-times3, memory3, = test(iterations, solve_LU)
-times4, memory4, = test(iterations, solve_LU_with_pivots)
-siz = range(start_c, end_c, length = 19)
+# iterations = 100
+# times1, memory1, = test(iterations, solve_gauss)
+# times2, memory2, = test(iterations, solve_gauss_with_pivots)
+# times3, memory3, = test(iterations, solve_LU)
+# times4, memory4, = test(iterations, solve_LU_with_pivots)
+# siz = range(start_c, end_c, length = 19)
 
-plot_times(siz, times1, times2, times3, times4)
-
-plot_memory(siz, memory1, memory2, memory3, memory4)
+# plot_times(siz, times1, times2, times3, times4)
+# plot_memory(siz, memory1, memory2, memory3, memory4)
 
 # file_path = "../data/WygenerowaneDane/A5800_4_10.0.txt"
 # M, size, block_size = read_A_file(file_path)
 # b = calculate_right_side(M, size, block_size)
 # solution = solve_LU_with_pivots(M, b, size, block_size)
-# write_X_file_with_error("./xLOLLOL.txt", solution, size)
+# write_X_file_with_error("./test.txt", solution, size)
